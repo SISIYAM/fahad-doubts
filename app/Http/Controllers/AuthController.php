@@ -13,7 +13,7 @@ class AuthController extends Controller
   
     // function for load login form
     public function loadLoginForm() {
-        return Inertia::render("authentication/Login",["executeLogin" => route("execute.auth.login")]);
+        return Inertia::render("authentication/Login");
     }
 
     // function for validate and register account

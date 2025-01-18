@@ -1,7 +1,9 @@
 import { Link, router } from "@inertiajs/react";
 import React, { useState } from "react";
+import { useRoute } from "ziggy-js";
 
-const Login = ({ flash, executeLogin, errors }) => {
+const Login = ({ flash, errors }) => {
+    const route = useRoute();
     const [values, setValues] = useState({
         email: "",
         password: "",
@@ -17,20 +19,12 @@ const Login = ({ flash, executeLogin, errors }) => {
 
     function handleSubmit(e) {
         e.preventDefault();
-        router.post(executeLogin, values);
+        router.post(route("execute.auth.login"), values);
     }
-    console.log(values);
+
     return (
         <div className="auth-main">
             <div className="auth-wrapper v2">
-                <div className="auth-sidecontent">
-                    <img
-                        src="/assets/images/img-auth-sideimg.jpg"
-                        alt="Authentication Side"
-                        className="img-fluid img-auth-side"
-                    />
-                </div>
-                <Link href="/">Redirect to home</Link>
                 <div className="auth-form">
                     <div className="card my-5">
                         {flash.error && (

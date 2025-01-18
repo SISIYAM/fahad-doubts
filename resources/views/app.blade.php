@@ -60,6 +60,8 @@
 <body data-pc-preset="preset-1" data-pc-sidebar-caption="true" data-pc-layout="vertical" data-pc-direction="ltr"
     data-pc-theme_contrast="" data-pc-theme="light">
 
+    <!-- ziggy routes -->
+    @routes
     <!-- inersia -->
     @inertia
 
