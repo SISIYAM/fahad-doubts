@@ -1,11 +1,12 @@
-import { Link } from "@inertiajs/react";
+import { Link, usePage } from "@inertiajs/react";
 import React from "react";
-import Navbar from "@/components/Navbar";
 
-import Footer from "@/components/Footer";
 import Layout from "@/layouts/Layout";
 
-function Home({ aboutUrl }) {
+function Home() {
+    const { auth } = usePage().props;
+    const role = auth?.user?.role;
+
     return (
         <>
             {/* [ Main Content ] start */}

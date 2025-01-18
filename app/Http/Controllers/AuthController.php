@@ -13,6 +13,9 @@ class AuthController extends Controller
   
     // function for load login form
     public function loadLoginForm() {
+        if(Auth::check()){
+            return to_route("dashboard");
+        }
         return Inertia::render("authentication/Login");
     }
 

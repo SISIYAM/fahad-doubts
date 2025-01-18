@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 class AuthMiddleware
@@ -17,8 +18,8 @@ class AuthMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         // Check if the user is authenticated
-        if (auth()->check()) {
-            $user = auth()->user();
+        if (Auth::check()) {
+            $user = Auth::user();
 
             // If the user is active, proceed
             if ($user->status == 1) {
@@ -26,7 +27,7 @@ class AuthMiddleware
             }
 
             // If the user's status is not active (status == 0), log them out
-            auth()->logout();
+            Auth::logout();
 
             // Redirect to the login page with an error message
             return to_route('auth.login')->with('error', 'Your account is deactivated. Please contact the administrator.');

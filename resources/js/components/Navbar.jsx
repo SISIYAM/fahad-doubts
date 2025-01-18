@@ -1,7 +1,25 @@
-import { Link } from "@inertiajs/react";
+import { Link, usePage } from "@inertiajs/react";
 import React, { useEffect, useRef, useState } from "react";
+import { useRoute } from "ziggy-js";
+import useAuthRoles from "../helper/Helper";
+import SolverNavLinks from "./solver/SolverNavLinks";
+import StudentNavLinks from "./student/StudentNavLinks";
+import ModeratorNavLink from "./moderator/ModeratorNavLink";
+import AdminNavLink from "./admin/AdminNavLink";
 
 function Navbar() {
+    // auth roles
+    const { isStudent, isSolver, isModerator, isAdmin } = useAuthRoles();
+
+    // get logged in users info
+    const { auth } = usePage().props;
+    const name = auth?.user?.name;
+    const email = auth?.user?.email;
+    const role = auth?.user?.role;
+
+    // use ziggy routes
+    const route = useRoute();
+
     const [isSideBarActive, setIsSideBarActive] = useState(false);
     const sidebarRef = useRef(null);
     const resetStatesExcept = (currentState, currentStateSetter) => {
@@ -80,69 +98,10 @@ function Navbar() {
                     </div>
                     <div className="navbar-content">
                         <ul className="pc-navbar">
-                            {/* <li class="pc-item pc-caption">
-    <label data-i18n="Navigation">Navigation</label>
-  </li> */}
-                            <li className="pc-item">
-                                <Link href="/" className="pc-link">
-                                    <span className="pc-micon">
-                                        <i className="ti ti-3d-cube-sphere" />
-                                    </span>
-                                    <span
-                                        className="pc-mtext"
-                                        data-i18n="Dashboard"
-                                    >
-                                        Dashboard
-                                    </span>
-                                </Link>
-                            </li>
-                            <li className="pc-item">
-                                <Link href="/post" className="pc-link">
-                                    <span className="pc-micon">
-                                        <i className="ti ti-3d-cube-sphere" />
-                                    </span>
-                                    <span
-                                        className="pc-mtext"
-                                        data-i18n="Dashboard"
-                                    >
-                                        Post
-                                    </span>
-                                </Link>
-                            </li>
-                            <li className="pc-item">
-                                <a
-                                    href="#!"
-                                    className="pc-link"
-                                    target="_blank"
-                                >
-                                    <span className="pc-micon">
-                                        <i className="ti ti-lock" />
-                                    </span>
-                                    <span
-                                        className="pc-mtext"
-                                        data-i18n="Lock Doubts"
-                                    >
-                                        Lock Doubts
-                                    </span>
-                                </a>
-                            </li>
-                            <li className="pc-item">
-                                <a
-                                    href="#!"
-                                    className="pc-link"
-                                    target="_blank"
-                                >
-                                    <span className="pc-micon">
-                                        <i className="ti ti-search" />
-                                    </span>
-                                    <span
-                                        className="pc-mtext"
-                                        data-i18n="Browse Doubts"
-                                    >
-                                        Browse Doubts
-                                    </span>
-                                </a>
-                            </li>
+                            {isSolver() && <SolverNavLinks />}
+                            {isStudent() && <StudentNavLinks />}
+                            {isModerator() && <ModeratorNavLink />}
+                            {isAdmin() && <AdminNavLink />}
                         </ul>
                     </div>
                 </div>
@@ -350,11 +309,9 @@ function Navbar() {
                                                 </div>
                                                 <div className="flex-grow-1 ms-3">
                                                     <h6 className="mb-1">
-                                                        Ahmmed Imtiaz 🖖
+                                                        {name}
                                                     </h6>
-                                                    <span>
-                                                        hello@ahmmedimtiaz.com
-                                                    </span>
+                                                    <span>{email}</span>
                                                 </div>
                                             </div>
                                             <hr className="border-secondary border-opacity-50" />
