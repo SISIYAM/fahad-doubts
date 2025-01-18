@@ -395,18 +395,20 @@ function Navbar() {
                                             </a>
                                             <hr className="border-secondary border-opacity-50" />
                                             <div className="d-grid mb-2">
-                                                <button
-                                                    className="btn btn-light text-white font-weight-bold"
-                                                    style={{
-                                                        backgroundColor:
-                                                            "#FF8016",
-                                                    }}
-                                                >
-                                                    <svg className="pc-icon me-2">
-                                                        <use xlinkHref="#custom-logout-1-outline" />
-                                                    </svg>
-                                                    Logout
-                                                </button>
+                                                <Link href="/logout">
+                                                    <button
+                                                        className="btn btn-light text-white font-weight-bold"
+                                                        style={{
+                                                            backgroundColor:
+                                                                "#FF8016",
+                                                        }}
+                                                    >
+                                                        <svg className="pc-icon me-2">
+                                                            <use xlinkHref="#custom-logout-1-outline" />
+                                                        </svg>
+                                                        Logout
+                                                    </button>
+                                                </Link>
                                             </div>
                                         </div>
                                     </div>
