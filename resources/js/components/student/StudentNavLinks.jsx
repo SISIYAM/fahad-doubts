@@ -30,14 +30,18 @@ function StudentNavLinks() {
                 </Link>
             </li>
             <li className="pc-item">
-                <a href="#!" className="pc-link" target="_blank">
+                <Link
+                    href={route("student.explore.doubt")}
+                    className="pc-link"
+                    target="_blank"
+                >
                     <span className="pc-micon">
                         <i className="ti ti-search" />
                     </span>
                     <span className="pc-mtext" data-i18n="Browse Doubts">
                         Explore Doubts
                     </span>
-                </a>
+                </Link>
             </li>
         </>
     );

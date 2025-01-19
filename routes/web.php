@@ -48,6 +48,7 @@ Route::middleware([AuthMiddleware::class])->group(function () {
         Route::controller(StudentController::class)->group(function() {  
             // route for load post doubts page
             Route::get("/post/doubt","loadPostDoubt")->name("student.post.doubt");
+            Route::get("/explore/doubts","laodExploreDoubt")->name("student.explore.doubt");
         });
     });
 

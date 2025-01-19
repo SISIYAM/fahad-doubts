@@ -66,8 +66,8 @@ function Navbar() {
                             position: "relative",
                         }}
                     >
-                        <a
-                            href="../dashboard/index.html"
+                        <Link
+                            href={route("dashboard")}
                             className="b-brand text-primary"
                         >
                             {/* ========   Change your logo from here   ============ */}
@@ -76,7 +76,7 @@ function Navbar() {
                                 className="img-fluid"
                                 alt="logo"
                             />
-                        </a>
+                        </Link>
                         {isSideBarActive && (
                             <div
                                 className="flex justify-end items-center"

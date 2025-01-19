@@ -11,4 +11,9 @@ class StudentController extends Controller
     public function loadPostDoubt() {
         return Inertia::render("student/PostDoubt");
     }
+
+    // function for load explore doubts page
+    public function laodExploreDoubt() {
+        return Inertia::render("student/ExploreDoubt");
+    }
 }
