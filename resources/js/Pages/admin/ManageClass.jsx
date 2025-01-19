@@ -1,19 +1,21 @@
 import React, { useEffect } from "react";
 import Layout from "@/layouts/Layout";
-import { useForm, usePage } from "@inertiajs/react";
+import { useForm } from "@inertiajs/react";
 import { route } from "ziggy-js";
 import { ToastContainer, toast } from "react-toastify";
 
-function ManageClass() {
-    const { flash, errors } = usePage().props;
-
+function ManageClass({ flash, errors, classes }) {
     const { data, setData, post, progress } = useForm({
         name: "",
     });
 
     function submit(e) {
         e.preventDefault();
-        post(route("admin.execute.add.class"));
+        post(route("admin.execute.add.class"), {
+            onSuccess: () => {
+                setData("name", "");
+            },
+        });
     }
 
     // Show success message
@@ -113,61 +115,36 @@ function ManageClass() {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td>Class 9</td>
-                                                <td>
-                                                    <button className="btn btn-primary btn-sm">
-                                                        Edit
-                                                    </button>
-                                                    <button className="btn btn-danger btn-sm">
-                                                        Delete
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Class 9</td>
-                                                <td>
-                                                    <button className="btn btn-primary btn-sm">
-                                                        Edit
-                                                    </button>
-                                                    <button className="btn btn-danger btn-sm">
-                                                        Delete
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Class 10</td>
-                                                <td>
-                                                    <button className="btn btn-primary btn-sm">
-                                                        Edit
-                                                    </button>
-                                                    <button className="btn btn-danger btn-sm">
-                                                        Delete
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Class 10</td>
-                                                <td>
-                                                    <button className="btn btn-primary btn-sm">
-                                                        Edit
-                                                    </button>
-                                                    <button className="btn btn-danger btn-sm">
-                                                        Delete
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Class 10</td>
-                                                <td>
-                                                    <button className="btn btn-primary btn-sm">
-                                                        Edit
-                                                    </button>
-                                                    <button className="btn btn-danger btn-sm">
-                                                        Delete
-                                                    </button>
-                                                </td>
-                                            </tr>
+                                            {classes.length > 0 &&
+                                                classes.map(
+                                                    (classItem, index) => (
+                                                        <tr key={index}>
+                                                            <td>
+                                                                {classItem.name}
+                                                            </td>
+                                                            <td>
+                                                                <a
+                                                                    href="#"
+                                                                    class="avtar avtar-xs btn-link-secondary"
+                                                                >
+                                                                    <i class="ti ti-eye f-20"></i>
+                                                                </a>
+                                                                <a
+                                                                    href="#"
+                                                                    class="avtar avtar-xs btn-link-secondary"
+                                                                >
+                                                                    <i class="ti ti-edit f-20"></i>
+                                                                </a>
+                                                                <a
+                                                                    href="#"
+                                                                    class="avtar avtar-xs btn-link-secondary"
+                                                                >
+                                                                    <i class="ti ti-trash f-20"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                    )
+                                                )}
                                         </tbody>
                                     </table>
                                 </div>
