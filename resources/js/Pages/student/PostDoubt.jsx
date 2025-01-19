@@ -1,34 +1,33 @@
-import React, { useState, useRef } from "react";
-import Navbar from "../../components/Navbar";
-import Footer from "../../components/Footer";
-import Layout from "../../layouts/Layout";
+import React, { useState, useRef, useEffect } from "react";
+
+import Layout from "@/layouts/Layout";
 
 function PostDoubt() {
-    const [images, setImages] = useState([]);
+    const [image, setImage] = useState(null);
     const [audio, setAudio] = useState(null);
     const [isRecording, setIsRecording] = useState(false);
     const [audioChunks, setAudioChunks] = useState([]);
+    const [timer, setTimer] = useState(0); // Timer state
     const mediaRecorderRef = useRef(null);
+    const [className, setClassName] = useState("");
+    const [subject, setSubject] = useState("");
+    const [chapter, setChapter] = useState("");
+    const [text, setText] = useState("");
 
     const handleImageUpload = (event) => {
-        const files = Array.from(event.target.files);
-        const newImages = files.filter((file) =>
-            file.type.startsWith("image/")
-        );
-        setImages((prev) => [
-            ...prev,
-            ...newImages.map((file) => ({
+        const file = event.target.files[0];
+        if (file && file.type.startsWith("image/")) {
+            setImage({
                 file,
                 preview: URL.createObjectURL(file),
-            })),
-        ]);
-        event.target.value = ""; // Reset the input to allow re-upload of the same file
+            });
+        }
+        event.target.value = "";
     };
 
-    const handleImageRemove = (index) => {
-        setImages((prev) => prev.filter((_, i) => i !== index));
+    const handleImageRemove = () => {
+        setImage(null);
     };
-
     const startRecording = async () => {
         if (!navigator.mediaDevices?.getUserMedia) {
             alert("Your browser does not support voice recording.");
@@ -41,8 +40,9 @@ function PostDoubt() {
             });
             const mediaRecorder = new MediaRecorder(stream);
             mediaRecorderRef.current = mediaRecorder;
-            setAudioChunks([]);
+
             setIsRecording(true);
+            setTimer(0);
 
             mediaRecorder.addEventListener("dataavailable", (event) => {
                 setAudioChunks((prev) => [...prev, event.data]);
@@ -63,6 +63,8 @@ function PostDoubt() {
         }
     };
 
+    // console.log(audio);
+
     const stopRecording = () => {
         if (mediaRecorderRef.current?.state === "recording") {
             mediaRecorderRef.current.stop();
@@ -71,6 +73,20 @@ function PostDoubt() {
                 .forEach((track) => track.stop());
         }
     };
+
+    useEffect(() => {
+        let interval;
+        if (isRecording) {
+            interval = setInterval(() => {
+                setTimer((prevTime) => prevTime + 1);
+            }, 1000);
+        } else {
+            clearInterval(interval);
+        }
+
+        return () => clearInterval(interval);
+    }, [isRecording]);
+
     return (
         <>
             {/* [ Main Content ] start */}
@@ -87,6 +103,10 @@ function PostDoubt() {
                                     name="selectClass"
                                     id="selectClass"
                                     required
+                                    value={className}
+                                    onChange={(e) =>
+                                        setClassName(e.target.value)
+                                    }
                                 >
                                     <option label="select" />
                                     <option>Class 9</option>
@@ -104,12 +124,14 @@ function PostDoubt() {
                                     name="selectSubject"
                                     id="selectSubject"
                                     required
+                                    value={subject}
+                                    onChange={(e) => setSubject(e.target.value)}
                                 >
                                     <option label="select" />
                                     <option>Vector</option>
-                                    <option>Vector</option>
-                                    <option>Vector</option>
-                                    <option>Vector</option>
+                                    <option>Physics</option>
+                                    <option>Maths</option>
+                                    <option>Chemistry</option>
                                 </select>
                             </div>
                             <div className="col-lg-4 col-md-12">
@@ -121,12 +143,14 @@ function PostDoubt() {
                                     name="selectChapter"
                                     id="selectChapter"
                                     required
+                                    value={chapter}
+                                    onChange={(e) => setChapter(e.target.value)}
                                 >
                                     <option label="select" />
-                                    <option>Vector</option>
-                                    <option>Vector</option>
-                                    <option>Vector</option>
-                                    <option>Vector</option>
+                                    <option>Chapter 1</option>
+                                    <option>Chapter 2</option>
+                                    <option>Chapter 3</option>
+                                    <option>Chapter 4</option>
                                 </select>
                             </div>
                         </div>
@@ -135,7 +159,8 @@ function PostDoubt() {
                             placeholder="Post Your Doubt Here"
                             rows={6}
                             style={{ resize: "none", width: "100%" }}
-                            defaultValue={""}
+                            value={text}
+                            onChange={(e) => setText(e.target.value)}
                         />
                         <div className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center">
                             <div className="d-flex align-items-center flex-wrap">
@@ -156,45 +181,10 @@ function PostDoubt() {
                                     type="file"
                                     id="image-upload"
                                     accept="image/*"
-                                    multiple
                                     style={{ display: "none" }}
                                     onChange={handleImageUpload}
                                 />
-                                {/* Image Previews */}
-                                <div
-                                    id="image-preview-container"
-                                    className="d-flex flex-wrap"
-                                >
-                                    {images.map((img, index) => (
-                                        <div
-                                            key={index}
-                                            className="image-wrapper d-inline-block position-relative me-2 mb-2"
-                                        >
-                                            <img
-                                                src={img.preview}
-                                                alt={img.file.name}
-                                                className="img-thumbnail"
-                                                style={{
-                                                    width: "100px",
-                                                    height: "100px",
-                                                    objectFit: "cover",
-                                                }}
-                                            />
-                                            <button
-                                                className="btn btn-danger btn-sm position-absolute top-0 end-0"
-                                                style={{
-                                                    transform:
-                                                        "translate(50%, -50%)",
-                                                }}
-                                                onClick={() =>
-                                                    handleImageRemove(index)
-                                                }
-                                            >
-                                                ×
-                                            </button>
-                                        </div>
-                                    ))}
-                                </div>
+                                {/* Image Preview */}
 
                                 {/* Voice Recording */}
                                 <div
@@ -222,40 +212,69 @@ function PostDoubt() {
                                             >
                                                 Stop
                                             </button>
-                                        </div>
-                                    )}
-                                </div>
-
-                                {/* Audio Preview */}
-                                <div
-                                    id="audio-preview-container"
-                                    className="d-flex flex-wrap"
-                                >
-                                    {audio && (
-                                        <div className="audio-wrapper d-inline-block me-2 mb-2">
-                                            <audio
-                                                src={audio.preview}
-                                                controls
-                                                className="d-block"
-                                            />
-                                            <button
-                                                className="btn btn-danger btn-sm mt-2"
-                                                onClick={() => setAudio(null)}
-                                            >
-                                                Delete
-                                            </button>
+                                            <span className="ms-2">
+                                                {timer}s
+                                            </span>
                                         </div>
                                     )}
                                 </div>
                             </div>
                         </div>
-                        {/* Preview containers */}
                         <div
-                            id="image-preview-container"
-                            className="mt-3 d-flex flex-wrap"
-                            style={{ gap: 10 }}
-                        />
-                        <div id="audio-preview-container" className="mt-3" />
+                            className="d-flex flex-wrap my-5"
+                            style={{ justifyContent: "space-between" }}
+                        >
+                            {image && (
+                                <div
+                                    id="image-preview-container"
+                                    className="d-flex flex-wrap"
+                                >
+                                    <div className="image-wrapper d-inline-block position-relative me-2 mb-2">
+                                        <img
+                                            src={image.preview}
+                                            alt={image.file.name}
+                                            className="img-thumbnail"
+                                            style={{
+                                                width: "100px",
+                                                height: "100px",
+                                                objectFit: "cover",
+                                            }}
+                                        />
+                                        <button
+                                            className="btn btn-danger btn-sm position-absolute top-0 end-0"
+                                            style={{
+                                                transform:
+                                                    "translate(50%, -50%)",
+                                            }}
+                                            onClick={handleImageRemove}
+                                        >
+                                            ×
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
+                            {/* Audio Preview */}
+                            {audio && (
+                                <div
+                                    id="audio-preview-container"
+                                    className="d-flex flex-wrap"
+                                >
+                                    <div className="audio-wrapper d-inline-block me-2 mb-2">
+                                        <audio
+                                            src={audio.preview}
+                                            controls
+                                            className="d-block"
+                                        />
+                                        <button
+                                            className="btn btn-danger btn-sm mt-2"
+                                            onClick={() => setAudio(null)}
+                                        >
+                                            Delete
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
                         {/* Post button aligned to the right */}
                         <div className="d-flex justify-content-end mt-3">
                             <button
@@ -267,6 +286,8 @@ function PostDoubt() {
                         </div>
                     </div>
                 </div>
+
+                {/* Preview Card */}
                 <div className="col-12 col-md-4">
                     <div
                         className="card"
@@ -274,7 +295,7 @@ function PostDoubt() {
                     >
                         <div className="card-body">
                             <h4
-                                className=" text-center mb-3"
+                                className="text-center mb-3"
                                 style={{ color: "#FFE81C" }}
                             >
                                 Preview
@@ -287,122 +308,45 @@ function PostDoubt() {
                                             justifyContent: "center",
                                         }}
                                     >
-                                        <span>Class</span>
+                                        <span>
+                                            {className ? className : "Class"}
+                                        </span>
                                         <i className="ti ti-chevron-right" />
-                                        <span>Subject</span>
+                                        <span>
+                                            {subject ? subject : "Subject"}
+                                        </span>
                                         <i className="ti ti-chevron-right" />
-                                        <span>Chapter</span>
+                                        <span>
+                                            {chapter ? chapter : "Chapter"}
+                                        </span>
                                     </h5>
                                 </div>
                             </div>
-                            <hr style={{ color: "#FFE81C" }} id="specialhr" />
-                            <div className="row">
-                                <div>
-                                    <div className="p-4 d-flex flex-column align-items-center gap-4">
-                                        <p className="text-white">
-                                            Lorem ipsum dolor sit amet
-                                            consectetur adipisicing elit. Ipsam
-                                            aut hic dignissimos sapiente ab
-                                            nostrum, eveniet provident corrupti
-                                            saepe enim.
-                                        </p>
-                                        {/* <img src="https://dummyimage.com/600x400/000/fff" alt="" class="img-fluid mb-1"> */}
-                                    </div>
-                                </div>
-                                <div className="d-flex justify-content-between align-items-center">
-                                    <div className="d-flex align-items-center gap-2">
-                                        <i className="ti ti-user text-white" />
-                                        <p className="text-white mb-0">
-                                            Username
-                                        </p>
-                                    </div>
-                                    <div className="d-flex align-items-center gap-2">
-                                        <i className="ti ti-clock text-white" />
-                                        <p className="text-white mb-0">
-                                            Just Now
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div className="row">
-                <h2
-                    className="doubts-title mb-4 mt-5"
-                    style={{
-                        color: "#174267",
-                        display: "inline-flex",
-                        alignItems: "center",
-                        gap: 5,
-                    }}
-                >
-                    Your Doubts <i className="ti ti-arrow-right" />
-                </h2>
-                <div className="col-12 col-md-4">
-                    <div
-                        className="card"
-                        style={{ backgroundColor: "#174267" }}
-                    >
-                        <div className="card-body">
-                            <div className="d-flex justify-content-between align-items-center ">
-                                <div>
-                                    <h5
-                                        className="text-white d-flex align-items-center flex-wrap gap-1"
-                                        style={{ textAlign: "center" }}
-                                    >
-                                        <span>Class</span>{" "}
-                                        <i className="ti ti-chevron-right" />{" "}
-                                        <span>Subject</span>{" "}
-                                        <i className="ti ti-chevron-right" />{" "}
-                                        <span>Chapter</span>
-                                    </h5>
-                                </div>
-                                <div>
-                                    <button
-                                        className="btn btn-success"
-                                        style={{
-                                            padding: "5px 20px",
-                                            borderRadius: 9,
-                                        }}
-                                    >
-                                        Solved
-                                    </button>
-                                </div>
-                            </div>
-                            <hr style={{ color: "#FFE81C" }} id="specialhr" />
-                            <div className="row">
-                                <div>
-                                    <div className="p-4 d-flex flex-column align-items-center gap-4">
-                                        <p className="text-white">
-                                            Lorem ipsum dolor sit amet
-                                            consectetur adipisicing elit. Ipsam
-                                            aut hic dignissimos sapiente ab
-                                            nostrum, eveniet provident corrupti
-                                            saepe enim.
-                                        </p>
-                                        <img
-                                            src="https://dummyimage.com/600x400/000/fff"
-                                            alt
-                                            className="img-fluid mb-1"
-                                        />
-                                    </div>
-                                </div>
-                                <div className="d-flex justify-content-between align-items-center">
-                                    <div className="d-flex align-items-center gap-2">
-                                        <i className="ti ti-user text-white" />
-                                        <p className="text-white mb-0">
-                                            Username
-                                        </p>
-                                    </div>
-                                    <div className="d-flex align-items-center gap-2">
-                                        <i className="ti ti-clock text-white" />
-                                        <p className="text-white mb-0">
-                                            1 hour ago
-                                        </p>
-                                    </div>
-                                </div>
+                            <hr
+                                style={{ color: "#FFE81C" }}
+                                id="preview-line"
+                            />
+                            <div className="mt-2">
+                                <p
+                                    className="text-white"
+                                    style={{ fontSize: "14px" }}
+                                >
+                                    {text || "No text added"}
+                                </p>
+                                {image && (
+                                    <img
+                                        src={image.preview}
+                                        alt={image.file.name}
+                                        className="img-thumbnail"
+                                    />
+                                )}
+                                {audio && (
+                                    <audio
+                                        controls
+                                        className="d-block mt-2"
+                                        src={audio.preview}
+                                    />
+                                )}
                             </div>
                         </div>
                     </div>
@@ -414,5 +358,4 @@ function PostDoubt() {
 }
 
 PostDoubt.layout = (page) => <Layout children={page} />;
-
 export default PostDoubt;

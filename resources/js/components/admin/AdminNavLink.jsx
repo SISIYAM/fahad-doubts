@@ -7,7 +7,17 @@ function AdminNavLink() {
         <>
             <div>
                 <li className="pc-item">
-                    <a href="./solver.html" className="pc-link">
+                    <Link href={route("dashboard")} className="pc-link">
+                        <span className="pc-micon">
+                            <i className="ti ti-home" />
+                        </span>
+                        <span className="pc-mtext" data-i18n="Dashboard">
+                            Dashboard
+                        </span>
+                    </Link>
+                </li>
+                <li className="pc-item">
+                    <Link href="" className="pc-link">
                         <span className="pc-micon">
                             <svg className="pc-icon">
                                 <use xlinkHref="#custom-user" />
@@ -16,10 +26,10 @@ function AdminNavLink() {
                         <span className="pc-mtext" data-i18n="Solver">
                             Solver
                         </span>
-                    </a>
+                    </Link>
                 </li>
                 <li className="pc-item">
-                    <a href="./modadmin.html" className="pc-link">
+                    <Link href="" className="pc-link">
                         <span className="pc-micon">
                             <svg className="pc-icon">
                                 <use xlinkHref="#custom-security-safe" />
@@ -28,7 +38,7 @@ function AdminNavLink() {
                         <span className="pc-mtext" data-i18n="Mod Admin">
                             Mod Admin
                         </span>
-                    </a>
+                    </Link>
                 </li>
                 <li className="pc-item">
                     <Link
