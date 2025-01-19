@@ -81,18 +81,6 @@
     <script src="{{ asset('assets/js/theme.js') }}"></script>
     <script src="{{ asset('assets/js/multi-lang.js') }}"></script>
     <script src="{{ asset('assets/js/plugins/feather.min.js') }}"></script>
-    <!-- datatable Js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="{{ asset('assets/js/plugins/dataTables.min.js') }}"></script>
-    <script src="{{ asset('assets/js/plugins/dataTables.bootstrap5.min.js') }}"></script>
-    <script src="{{ asset('assets/js/plugins/buttons.colVis.min.js') }}"></script>
-    <script src="{{ asset('assets/js/plugins/buttons.print.min.js') }}"></script>
-    <script src="{{ asset('assets/js/plugins/pdfmake.min.js') }}"></script>
-    <script src="{{ asset('assets/js/plugins/jszip.min.js') }}"></script>
-    <script src="{{ asset('assets/js/plugins/dataTables.buttons.min.js') }}"></script>
-    <script src="{{ asset('assets/js/plugins/vfs_fonts.js') }}"></script>
-    <script src="{{ asset('assets/js/plugins/buttons.html5.min.js') }}"></script>
-    <script src="{{ asset('assets/js/plugins/buttons.bootstrap5.min.js') }}"></script>
 
 
 </body>

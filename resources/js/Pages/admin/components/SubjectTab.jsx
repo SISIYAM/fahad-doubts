@@ -2,6 +2,11 @@ import React from "react";
 import { useForm } from "@inertiajs/react";
 import { route } from "ziggy-js";
 
+import DataTable from "datatables.net-react";
+import DT from "datatables.net-bs5";
+
+DataTable.use(DT);
+
 function SubjectTab({ classes, subjects }) {
     const { data, setData, post, progress } = useForm({
         name: "",
@@ -117,7 +122,10 @@ function SubjectTab({ classes, subjects }) {
                             </div>
                             <div className="card-body table-border-style">
                                 <div className="table-responsive">
-                                    <table className="table" id="pc-dt-simple">
+                                    <DataTable
+                                        className="table"
+                                        id="pc-dt-simple"
+                                    >
                                         <thead>
                                             <tr>
                                                 <th>Class Name</th>
@@ -172,7 +180,7 @@ function SubjectTab({ classes, subjects }) {
                                                     )
                                                 )}
                                         </tbody>
-                                    </table>
+                                    </DataTable>
                                 </div>
                             </div>
                         </div>

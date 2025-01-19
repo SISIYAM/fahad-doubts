@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import { useForm } from "@inertiajs/react";
 import { route } from "ziggy-js";
+import DataTable from "datatables.net-react";
+import DT from "datatables.net-bs5";
+
+DataTable.use(DT);
 
 function ChapterTab({ classes, subjects, chapters }) {
     const { data, setData, post, progress } = useForm({
@@ -168,7 +172,7 @@ function ChapterTab({ classes, subjects, chapters }) {
                             </div>
                             <div className="card-body table-border-style">
                                 <div className="table-responsive">
-                                    <table className="table" id="pc-dt-simple">
+                                    <DataTable className="table">
                                         <thead>
                                             <tr>
                                                 <th>Class Name</th>
@@ -217,7 +221,7 @@ function ChapterTab({ classes, subjects, chapters }) {
                                                 </tr>
                                             ))}
                                         </tbody>
-                                    </table>
+                                    </DataTable>
                                 </div>
                             </div>
                         </div>
