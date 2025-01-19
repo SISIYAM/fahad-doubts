@@ -1,5 +1,6 @@
 import { Link } from "@inertiajs/react";
 import React from "react";
+import { route } from "ziggy-js";
 
 function StudentNavLinks() {
     return (
@@ -15,14 +16,18 @@ function StudentNavLinks() {
                 </Link>
             </li>
             <li className="pc-item">
-                <a href="#!" className="pc-link" target="_blank">
+                <Link
+                    href={route("student.post.doubt")}
+                    className="pc-link"
+                    target="_blank"
+                >
                     <span className="pc-micon">
                         <i className="ti ti-lock" />
                     </span>
                     <span className="pc-mtext" data-i18n="Lock Doubts">
                         Post Doubts
                     </span>
-                </a>
+                </Link>
             </li>
             <li className="pc-item">
                 <a href="#!" className="pc-link" target="_blank">

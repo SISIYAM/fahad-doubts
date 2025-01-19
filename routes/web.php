@@ -2,8 +2,21 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\StudentController;
 use App\Http\Middleware\AuthMiddleware;
+use App\Http\Middleware\ValidateStudent;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
+
+#=== Error Routes ===#
+Route::get("/error/404",function () {
+    return Inertia::render("errors/Error");
+})->name("error.404");
+
+Route::get("/error/forbidden",function () {
+    return Inertia::render("errors/Forbiddent");
+})->name("error.forbidden");
+
 
 
 #=== Routes for authentication ===#
@@ -26,6 +39,16 @@ Route::middleware([AuthMiddleware::class])->group(function () {
 
         // route for load root directiory
         Route::get("/","loadDashboard")->name("dashboard");
+    });
+
+
+    #=== Middle ware for validate student only ===#
+    Route::middleware([ValidateStudent::class])->group(function () {
+            #=== Routes for students ===#
+        Route::controller(StudentController::class)->group(function() {  
+            // route for load post doubts page
+            Route::get("/post/doubt","loadPostDoubt")->name("student.post.doubt");
+        });
     });
 
     

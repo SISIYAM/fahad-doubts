@@ -1,9 +1,9 @@
 import React, { useState, useRef } from "react";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
-import Layout from "../layouts/Layout";
+import Navbar from "../../components/Navbar";
+import Footer from "../../components/Footer";
+import Layout from "../../layouts/Layout";
 
-function Post() {
+function PostDoubt() {
     const [images, setImages] = useState([]);
     const [audio, setAudio] = useState(null);
     const [isRecording, setIsRecording] = useState(false);
@@ -413,6 +413,6 @@ function Post() {
     );
 }
 
-Post.layout = (page) => <Layout children={page} />;
+PostDoubt.layout = (page) => <Layout children={page} />;
 
-export default Post;
+export default PostDoubt;
