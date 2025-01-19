@@ -73,9 +73,8 @@ Route::middleware([AuthMiddleware::class])->group(function () {
         #=== Routes for admin ===#
         Route::controller(AdminController::class)->group(function() {  
             // route for load add class form
-            Route::get("/admin/add/class","loadAddClassForm")->name("admin.add.class");
-            Route::get("/admin/add/subject","loadAddSubjectForm")->name("admin.add.subject");
-            Route::get("/admin/add/chapter","loadAddChapterForm")->name("admin.add.chapter");
+            Route::get("/admin/manage/matrials","loadMaterialsPage")->name("admin.manage.matrials");
+            
             
         });
 
