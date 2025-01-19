@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpFoundation\Response;
 
 class ValidateAdmin
@@ -15,6 +16,12 @@ class ValidateAdmin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        return $next($request);
+        if(Gate::allows("isAdmin")){
+            return $next($request);
+        }
+
+        return to_route("error.forbidden");
+
+        
     }
 }

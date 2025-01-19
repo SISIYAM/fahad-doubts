@@ -1,10 +1,12 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\SolverController;
 use App\Http\Controllers\StudentController;
 use App\Http\Middleware\AuthMiddleware;
+use App\Http\Middleware\ValidateAdmin;
 use App\Http\Middleware\ValidateSolver;
 use App\Http\Middleware\ValidateStudent;
 use Illuminate\Support\Facades\Route;
@@ -54,16 +56,28 @@ Route::middleware([AuthMiddleware::class])->group(function () {
         });
     });
 
-    #=== Middle ware for validate student only ===#
+    #=== Middle ware for validate solver only ===#
     Route::middleware([ValidateSolver::class])->group(function () {
-        #=== Routes for students ===#
-    Route::controller(SolverController::class)->group(function() {  
-        // route for load post doubts page
-        Route::get("/locked/doubt","loadLockedDoubt")->name("solver.locked.doubt");
-        Route::get("/browse/doubt","loadBrowseDoubt")->name("solver.browse.doubt");
-        
+        #=== Routes for solver ===#
+        Route::controller(SolverController::class)->group(function() {  
+            // route for load post doubts page
+            Route::get("/locked/doubt","loadLockedDoubt")->name("solver.locked.doubt");
+            Route::get("/browse/doubt","loadBrowseDoubt")->name("solver.browse.doubt");
+            
+        });
     });
-});
+
+    #=== Middle ware for validate admin only ===#
+    Route::middleware([ValidateAdmin::class])->group(function () {
+        #=== Routes for admin ===#
+        Route::controller(AdminController::class)->group(function() {  
+            // route for load add class form
+            Route::get("/admin/add/class","loadAddClassForm")->name("admin.add.class");
+            Route::get("/admin/add/subject","loadAddSubjectForm")->name("admin.add.subject");
+            Route::get("/admin/add/chapter","loadAddChapterForm")->name("admin.add.chapter");
+            
+        });
+    });
 
     
 });

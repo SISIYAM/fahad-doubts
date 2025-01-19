@@ -5,6 +5,36 @@ function AdminNavLink() {
     return (
         <>
             <li className="pc-item">
+                <Link href={route("admin.add.class")} className="pc-link">
+                    <span className="pc-micon">
+                        <i className="ti ti-home" />
+                    </span>
+                    <span className="pc-mtext" data-i18n="Dashboard">
+                        Manage Class
+                    </span>
+                </Link>
+            </li>
+            <li className="pc-item">
+                <Link href={route("admin.add.subject")} className="pc-link">
+                    <span className="pc-micon">
+                        <i className="ti ti-home" />
+                    </span>
+                    <span className="pc-mtext" data-i18n="Dashboard">
+                        Manage Subjects
+                    </span>
+                </Link>
+            </li>
+            <li className="pc-item">
+                <Link href={route("admin.add.chapter")} className="pc-link">
+                    <span className="pc-micon">
+                        <i className="ti ti-home" />
+                    </span>
+                    <span className="pc-mtext" data-i18n="Dashboard">
+                        Manage Chapters
+                    </span>
+                </Link>
+            </li>
+            <li className="pc-item">
                 <Link href={route("dashboard")} className="pc-link">
                     <span className="pc-micon">
                         <i className="ti ti-home" />

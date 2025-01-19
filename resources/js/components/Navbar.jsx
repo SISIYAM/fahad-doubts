@@ -351,10 +351,10 @@ function Navbar() {
                                                 </span>
                                             </a>
                                             <hr className="border-secondary border-opacity-50" />
-                                            <div className="d-grid mb-2">
+                                            <div className="d-grid mb-2 w-100">
                                                 <Link href="/logout">
                                                     <button
-                                                        className="btn btn-light text-white font-weight-bold"
+                                                        className="btn btn-light text-white font-weight-bold w-100"
                                                         style={{
                                                             backgroundColor:
                                                                 "#FF8016",
