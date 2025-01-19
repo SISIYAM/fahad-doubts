@@ -2,8 +2,10 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\SolverController;
 use App\Http\Controllers\StudentController;
 use App\Http\Middleware\AuthMiddleware;
+use App\Http\Middleware\ValidateSolver;
 use App\Http\Middleware\ValidateStudent;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -51,6 +53,17 @@ Route::middleware([AuthMiddleware::class])->group(function () {
             Route::get("/explore/doubts","laodExploreDoubt")->name("student.explore.doubt");
         });
     });
+
+    #=== Middle ware for validate student only ===#
+    Route::middleware([ValidateSolver::class])->group(function () {
+        #=== Routes for students ===#
+    Route::controller(SolverController::class)->group(function() {  
+        // route for load post doubts page
+        Route::get("/locked/doubt","loadLockedDoubt")->name("solver.locked.doubt");
+        Route::get("/browse/doubt","loadBrowseDoubt")->name("solver.browse.doubt");
+        
+    });
+});
 
     
 });

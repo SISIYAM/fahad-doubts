@@ -1,9 +1,9 @@
 import { Link } from "@inertiajs/react";
 import React from "react";
-import Navbar from "../components/Navbar";
+import Navbar from "@/components/Navbar";
 
-import Footer from "../components/Footer";
-import Layout from "../layouts/Layout";
+import Footer from "@/components/Footer";
+import Layout from "@/layouts/Layout";
 
 function Home({ aboutUrl }) {
     return (

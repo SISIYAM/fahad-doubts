@@ -15,24 +15,32 @@ function SolverNavLinks() {
                 </Link>
             </li>
             <li className="pc-item">
-                <a href="#!" className="pc-link" target="_blank">
+                <Link
+                    href={route("solver.locked.doubt")}
+                    className="pc-link"
+                    target="_blank"
+                >
                     <span className="pc-micon">
                         <i className="ti ti-lock" />
                     </span>
                     <span className="pc-mtext" data-i18n="Lock Doubts">
                         Lock Doubts
                     </span>
-                </a>
+                </Link>
             </li>
             <li className="pc-item">
-                <a href="#!" className="pc-link" target="_blank">
+                <Link
+                    href={route("solver.browse.doubt")}
+                    className="pc-link"
+                    target="_blank"
+                >
                     <span className="pc-micon">
                         <i className="ti ti-search" />
                     </span>
                     <span className="pc-mtext" data-i18n="Browse Doubts">
                         Browse Doubts
                     </span>
-                </a>
+                </Link>
             </li>
         </>
     );
