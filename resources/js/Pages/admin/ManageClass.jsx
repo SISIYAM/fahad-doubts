@@ -1,9 +1,47 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Layout from "@/layouts/Layout";
+import { useForm, usePage } from "@inertiajs/react";
+import { route } from "ziggy-js";
+import { ToastContainer, toast } from "react-toastify";
 
 function ManageClass() {
+    const { flash, errors } = usePage().props;
+
+    const { data, setData, post, progress } = useForm({
+        name: "",
+    });
+
+    function submit(e) {
+        e.preventDefault();
+        post(route("admin.execute.add.class"));
+    }
+
+    // Show success message
+    useEffect(() => {
+        if (flash.success) {
+            toast.success(flash.success);
+        }
+    }, [flash.success]);
+
+    // Show success message
+    useEffect(() => {
+        if (flash.error) {
+            toast.error(flash.error);
+        }
+    }, [flash.error]);
+
+    // Show validation errors
+    useEffect(() => {
+        if (errors) {
+            Object.values(errors).forEach((error) => {
+                toast.error(error);
+            });
+        }
+    }, [errors]);
+
     return (
         <>
+            <ToastContainer />
             <div>
                 <div className="row">
                     <div className="col-12">
@@ -12,11 +50,7 @@ function ManageClass() {
                                 <h5 className="mb-0">Add Class</h5>
                             </div>
                             <div className="card-body">
-                                <form
-                                    action="#"
-                                    method="post"
-                                    encType="multipart/form-data"
-                                >
+                                <form onSubmit={submit}>
                                     <div className="row">
                                         <div className="col-md-12">
                                             <div className="mb-3">
@@ -25,11 +59,28 @@ function ManageClass() {
                                                 </label>
                                                 <input
                                                     type="text"
-                                                    name
+                                                    name="name"
                                                     className="form-control"
                                                     placeholder="Enter Class name"
+                                                    value={data.name}
+                                                    onChange={(e) =>
+                                                        setData(
+                                                            "name",
+                                                            e.target.value
+                                                        )
+                                                    }
                                                 />
                                             </div>
+                                        </div>
+                                        <div>
+                                            {progress && (
+                                                <progress
+                                                    value={progress.percentage}
+                                                    max="100"
+                                                >
+                                                    {progress.percentage}%
+                                                </progress>
+                                            )}
                                         </div>
                                         <div className="col-md-12 text-end">
                                             <button

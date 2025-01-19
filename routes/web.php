@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AdminInsertController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\SolverController;
@@ -77,6 +78,18 @@ Route::middleware([AuthMiddleware::class])->group(function () {
             Route::get("/admin/add/chapter","loadAddChapterForm")->name("admin.add.chapter");
             
         });
+
+
+        #=== Routes for Admin insert controller
+        Route::controller(AdminInsertController::class)->group(function() {
+            // route for insert class
+            Route::post("/execute/add/class","insertClass")->name("admin.execute.add.class");
+            // route for insert subject
+            Route::post("/execute/add/subject","insertSubject")->name("admin.execute.add.subject");
+            // route for insert chapter
+            Route::post("/execute/add/chapter","insertChapter")->name("admin.execute.add.chapter");
+        });
+
     });
 
     
