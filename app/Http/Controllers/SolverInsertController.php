@@ -75,4 +75,54 @@ class SolverInsertController extends Controller
    
         }
     }
+
+    // function for insert solver comment
+    public function insertComment(Request $req) {
+
+        try {
+            $validatedData = $req->validate([
+                'doubt_id' => 'required|integer',
+                'text' => 'required|string|max:5000',
+                'image' => 'nullable|file|image|max:2048', 
+                'audio' => 'nullable|file|max:5120', 
+            ]);
+            
+            // generate unique slug for doubt
+            $slug = $req->doubt_slug;
+    
+            // handle audio upload      
+            $audioPath = NULL;
+            if ($req->hasFile('audio')) {
+                $audio = $req->file('audio');            
+                $extension = $audio->getClientOriginalExtension();
+                $fileName = $slug . '-'.time().'.' . $extension;
+                $audioPath = $audio->storeAs('comment/audios', $fileName, 'public');
+            }
+            
+            // handle image upload
+            $imagePath = NULL;
+            if ($req->hasFile('image')) {
+                $image = $req->file('image');
+                $extension = $image->getClientOriginalExtension();
+                $customImageName = $slug . '-'.time().'.' . $extension; 
+                $imagePath = $image->storeAs('comment/images', $customImageName, 'public'); 
+            } 
+            
+            
+            // Add file paths to validated data
+            $validatedData['image'] = $imagePath;
+            $validatedData['audio'] = $audioPath;  
+            $validatedData['user_id'] = $this->loggedInUserId; 
+    
+            // Insert data into the database
+            CommentDoubt::create($validatedData);
+    
+            // insert into db
+            return to_route("solver.doubt.details",$slug)->with('success','Comment Posted Successfully.');
+        } catch (\Exception $e) {
+            return $e;
+            return to_route("solver.doubt.details",$slug)->with('error', 'An error occurred while submitting your Comment.');
+   
+        }
+    }
 }

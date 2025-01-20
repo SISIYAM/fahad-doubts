@@ -3,10 +3,10 @@ import Layout from "@/layouts/Layout";
 import { timeAgo } from "@/helper/Helper";
 import UserComment from "@/components/comment/UserComment";
 import SolverComment from "@/components/comment/SolverComment";
-import CommentForm from "@/components/comment/CommentForm";
 import { toast, ToastContainer } from "react-toastify";
 import SolverDoubtCard from "@/components/solver/SolverDoubtCard";
 import SolutionForm from "../../components/SolutionForm";
+import SolverCommentForm from "../../components/comment/SolverCommentForm";
 
 function SolveDetails({ auth, doubtDetails, env, flash, errors }) {
     const assetsUrl = env.ASSETS_URL;
@@ -150,9 +150,7 @@ function SolveDetails({ auth, doubtDetails, env, flash, errors }) {
                 </div>
             </div>
 
-            {auth?.user?.id == doubtDetails?.student?.id && (
-                <CommentForm user={auth?.user} doubt={doubtDetails} />
-            )}
+            <SolverCommentForm user={auth?.user} doubt={doubtDetails} />
 
             {/* [ Main Content ] end */}
         </>

@@ -65,7 +65,7 @@ Route::middleware([AuthMiddleware::class])->group(function () {
         Route::controller(StudentInsertController::class)->group(function() {
             // for insert doubts
             Route::post("/execute/add/doubt","insertDoubt")->name("execute.add.doubt");
-            // route for insert student commetn
+            // route for insert student comment
             Route::post("/execute/student/add/comment","insertComment")->name("execute.student.add.comment");
         });
     });
@@ -85,6 +85,8 @@ Route::middleware([AuthMiddleware::class])->group(function () {
         Route::controller(SolverInsertController::class)->group(function() {
             // route for submit solution
             Route::post("/execute/doubt/submit/solution","submitSolution")->name("execute.solver.submit.solution");
+            // route for insert solver comment
+            Route::post("/execute/solver/add/comment","insertComment")->name("execute.solver.add.comment");
         });
     });
 
