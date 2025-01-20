@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from "react";
-
 import Layout from "@/layouts/Layout";
 
 function PostDoubt() {
@@ -7,12 +6,17 @@ function PostDoubt() {
     const [audio, setAudio] = useState(null);
     const [isRecording, setIsRecording] = useState(false);
     const [audioChunks, setAudioChunks] = useState([]);
-    const [timer, setTimer] = useState(0); // Timer state
+    const [timer, setTimer] = useState(0);
     const mediaRecorderRef = useRef(null);
+    const mediaStream = useRef(null);
+    const mediaRecorder = useRef(null);
+    const chunks = useRef([]);
+    const [recordedURL, setRecordedURL] = useState("");
     const [className, setClassName] = useState("");
     const [subject, setSubject] = useState("");
     const [chapter, setChapter] = useState("");
     const [text, setText] = useState("");
+    const [seconds, setSeconds] = useState(0);
 
     const handleImageUpload = (event) => {
         const file = event.target.files[0];
@@ -28,49 +32,52 @@ function PostDoubt() {
     const handleImageRemove = () => {
         setImage(null);
     };
-    const startRecording = async () => {
-        if (!navigator.mediaDevices?.getUserMedia) {
-            alert("Your browser does not support voice recording.");
-            return;
-        }
 
+    const startRecording = async () => {
+        setIsRecording(true);
         try {
+            setSeconds(0);
             const stream = await navigator.mediaDevices.getUserMedia({
                 audio: true,
             });
-            const mediaRecorder = new MediaRecorder(stream);
-            mediaRecorderRef.current = mediaRecorder;
+            mediaStream.current = stream;
+            mediaRecorder.current = new MediaRecorder(stream);
 
-            setIsRecording(true);
-            setTimer(0);
+            mediaRecorder.current.ondataavailable = (e) => {
+                if (e.data.size > 0) {
+                    chunks.current.push(e.data);
+                }
+            };
 
-            mediaRecorder.addEventListener("dataavailable", (event) => {
-                setAudioChunks((prev) => [...prev, event.data]);
-            });
+            const timer = setInterval(() => {
+                setSeconds((prev) => prev + 1);
+            }, 1000);
 
-            mediaRecorder.addEventListener("stop", () => {
-                const audioBlob = new Blob(audioChunks, { type: "audio/mp3" });
-                setAudio({
-                    blob: audioBlob,
-                    preview: URL.createObjectURL(audioBlob),
+            mediaRecorder.current.onstop = () => {
+                const recordedBlob = new Blob(chunks.current, {
+                    type: "audio/mp3",
                 });
-                setIsRecording(false);
-            });
+                const url = URL.createObjectURL(recordedBlob);
+                setAudio({
+                    blob: recordedBlob,
+                    preview: url,
+                });
 
-            mediaRecorder.start();
+                chunks.current = [];
+                clearTimeout(timer);
+            };
+
+            mediaRecorder.current.start();
         } catch (error) {
-            alert("Unable to access microphone: " + error.message);
+            console.log(error);
         }
     };
 
-    // console.log(audio);
-
     const stopRecording = () => {
-        if (mediaRecorderRef.current?.state === "recording") {
-            mediaRecorderRef.current.stop();
-            mediaRecorderRef.current.stream
-                .getTracks()
-                .forEach((track) => track.stop());
+        setIsRecording(false);
+        if (mediaRecorder.current) {
+            mediaRecorder.current.stop();
+            mediaStream.current.getTracks().forEach((track) => track.stop());
         }
     };
 
@@ -155,7 +162,7 @@ function PostDoubt() {
                             </div>
                         </div>
                         <textarea
-                            className="form-control border-0 shadow-none mb-3 mt-4"
+                            className="form-control border-1 shadow-none mb-3 mt-4"
                             placeholder="Post Your Doubt Here"
                             rows={6}
                             style={{ resize: "none", width: "100%" }}
@@ -213,7 +220,7 @@ function PostDoubt() {
                                                 Stop
                                             </button>
                                             <span className="ms-2">
-                                                {timer}s
+                                                {seconds}s
                                             </span>
                                         </div>
                                     )}
