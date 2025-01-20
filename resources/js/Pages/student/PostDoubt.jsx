@@ -5,13 +5,10 @@ function PostDoubt() {
     const [image, setImage] = useState(null);
     const [audio, setAudio] = useState(null);
     const [isRecording, setIsRecording] = useState(false);
-    const [audioChunks, setAudioChunks] = useState([]);
     const [timer, setTimer] = useState(0);
-    const mediaRecorderRef = useRef(null);
     const mediaStream = useRef(null);
     const mediaRecorder = useRef(null);
     const chunks = useRef([]);
-    const [recordedURL, setRecordedURL] = useState("");
     const [className, setClassName] = useState("");
     const [subject, setSubject] = useState("");
     const [chapter, setChapter] = useState("");
