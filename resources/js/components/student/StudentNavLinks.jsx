@@ -22,9 +22,9 @@ function StudentNavLinks() {
                     target="_blank"
                 >
                     <span className="pc-micon">
-                        <i className="ti ti-lock" />
+                        <i className="ti ti-plus" />
                     </span>
-                    <span className="pc-mtext" data-i18n="Lock Doubts">
+                    <span className="pc-mtext" data-i18n=" Post Doubts">
                         Post Doubts
                     </span>
                 </Link>
@@ -38,7 +38,7 @@ function StudentNavLinks() {
                     <span className="pc-micon">
                         <i className="ti ti-search" />
                     </span>
-                    <span className="pc-mtext" data-i18n="Browse Doubts">
+                    <span className="pc-mtext" data-i18n=" Explore Doubts">
                         Explore Doubts
                     </span>
                 </Link>

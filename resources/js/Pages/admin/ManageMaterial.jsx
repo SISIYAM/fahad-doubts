@@ -8,27 +8,21 @@ import ChapterTab from "./components/ChapterTab";
 
 function ManageMaterial({ flash, errors, classes, subjects, chapters }) {
     // Show success message
-    useEffect(() => {
-        if (flash.success) {
-            toast.success(flash.success);
-        }
-    }, [flash.success]);
+    if (flash.success) {
+        toast.success(flash.success);
+    }
 
-    // Show success message
-    useEffect(() => {
-        if (flash.error) {
-            toast.error(flash.error);
-        }
-    }, [flash.error]);
+    // Show error message
+    if (flash.error) {
+        toast.error(flash.error);
+    }
 
     // Show validation errors
-    useEffect(() => {
-        if (errors) {
-            Object.values(errors).forEach((error) => {
-                toast.error(error);
-            });
-        }
-    }, [errors]);
+    if (errors) {
+        Object.values(errors).forEach((error) => {
+            toast.error(error);
+        });
+    }
     return (
         <>
             <ToastContainer />

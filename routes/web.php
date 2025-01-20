@@ -4,8 +4,11 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdminInsertController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DoubtController;
 use App\Http\Controllers\SolverController;
+use App\Http\Controllers\SolverInsertController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\StudentInsertController;
 use App\Http\Middleware\AuthMiddleware;
 use App\Http\Middleware\ValidateAdmin;
 use App\Http\Middleware\ValidateSolver;
@@ -55,6 +58,12 @@ Route::middleware([AuthMiddleware::class])->group(function () {
             Route::get("/post/doubt","loadPostDoubt")->name("student.post.doubt");
             Route::get("/explore/doubts","laodExploreDoubt")->name("student.explore.doubt");
         });
+
+        #=== Routes for student insert controller ===#
+        Route::controller(StudentInsertController::class)->group(function() {
+            // for insert doubts
+            Route::post("/execute/add/doubt","insertDoubt")->name("execute.add.doubt");
+        });
     });
 
     #=== Middle ware for validate solver only ===#
@@ -64,6 +73,11 @@ Route::middleware([AuthMiddleware::class])->group(function () {
             // route for load post doubts page
             Route::get("/locked/doubt","loadLockedDoubt")->name("solver.locked.doubt");
             Route::get("/browse/doubt","loadBrowseDoubt")->name("solver.browse.doubt");
+            
+        });
+
+        #=== Routes for solver insert controller
+        Route::controller(SolverInsertController::class)->group(function() {
             
         });
     });
@@ -89,6 +103,13 @@ Route::middleware([AuthMiddleware::class])->group(function () {
             Route::post("/execute/add/chapter","insertChapter")->name("admin.execute.add.chapter");
         });
 
+    });
+
+
+    #=== Routes for Doubts ===#
+    Route::controller(DoubtController::class)->group(function() {
+        // route for load doubts details
+        
     });
 
     
