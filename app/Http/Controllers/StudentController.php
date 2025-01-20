@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Inertia\Inertia;
+use App\Models\Doubt;
 use App\Models\Chapter;
 use App\Models\Subject;
 use App\Models\StudentClass;
@@ -31,6 +32,9 @@ class StudentController extends Controller
 
     // function for load explore doubts page
     public function laodExploreDoubt() {
-        return Inertia::render("student/ExploreDoubt");
+         // search posted doubts by user
+         $doubts = Doubt::orderBy('id','desc')->with('student','class','subject','chapter')->get();
+        
+        return Inertia::render("student/ExploreDoubt",['doubts' => $doubts]);
     }
 }

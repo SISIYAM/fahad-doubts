@@ -192,9 +192,27 @@ function PostDoubt({ classes, subjects, chapters, errors, flash }) {
         router.post(route("execute.add.doubt"), formData);
     };
 
+    // method for reset all
+    const resetInputs = () => {
+        setSelectedNames({
+            className: null,
+            subjectName: null,
+            chapterName: null,
+        });
+        setClassId("");
+        setSubjectId("");
+        setChapterId("");
+        setFilteredSubjects([]);
+        setFilteredChapters([]);
+        setText("");
+        setImage(null);
+        setAudio(null);
+    };
+
     // show success message
     if (flash.success) {
         toast.success(flash.success);
+        resetInputs();
         flash.success = null;
     }
 

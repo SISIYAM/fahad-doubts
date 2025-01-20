@@ -22,7 +22,7 @@ return new class extends Migration
             $table->text('text')->nullable();
             $table->string('image')->nullable();
             $table->string('audio')->nullable();
-            $table->integer('status')->default(0);
+            $table->integer('status')->default(1);
             $table->string('solver_id')->nullable();
             $table->timestamps();
         });
@@ -34,7 +34,7 @@ return new class extends Migration
             $table->text('text')->nullable();
             $table->string('image')->nullable();
             $table->string('audio')->nullable();
-            $table->integer('status')->default(0);
+            $table->integer('status')->default(1);
             $table->timestamps();
         });
 
@@ -45,7 +45,7 @@ return new class extends Migration
             $table->text('text')->nullable();
             $table->string('image')->nullable();
             $table->string('audio')->nullable();
-            $table->integer('status')->default(0);
+            $table->integer('status')->default(1);
             $table->timestamps();
         });
 

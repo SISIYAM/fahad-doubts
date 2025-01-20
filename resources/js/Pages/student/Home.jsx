@@ -1,6 +1,11 @@
 import React from "react";
 import Layout from "@/layouts/Layout";
-function Home() {
+import RecentDoubtCard from "../../components/RecentDoubtCard";
+function Home({ auth, doubts, env }) {
+    // get logged in users info
+    const name = auth?.user?.name;
+    const email = auth?.user?.email;
+    const assetsUrl = env.ASSETS_URL;
     return (
         <>
             <div>
@@ -14,7 +19,8 @@ function Home() {
                                     alt="User image"
                                 />
                             </div>
-                            <h3 className="mb-2 mt-3">Ahmmed Imtiaz</h3>
+                            <h3 className="mb-2 mt-3">{name}</h3>
+                            <p>{email}</p>
                             <h5 className="text-muted mb-2">
                                 Class 11 | Science
                             </h5>
@@ -36,7 +42,7 @@ function Home() {
                                 <h5 className="card-title">
                                     Total Posted Doubts
                                 </h5>
-                                <p className="card-text">120</p>
+                                <p className="card-text">{doubts.length}</p>
                             </div>
                         </div>
                     </div>
@@ -69,113 +75,21 @@ function Home() {
                             </div>
                             <div className="card-body">
                                 <div className="row">
-                                    <div className="col-12 col-md-6 col-lg-4">
-                                        <div className="card">
-                                            <div className="card-body">
-                                                <div className="d-flex justify-content-between">
-                                                    <h5 className="mb-0">
-                                                        <span>Subject</span>
-                                                        <i className="ti ti-chevron-right" />
-                                                        <span>Chapter</span>
-                                                    </h5>
-                                                    <span className="badge bg-danger">
-                                                        Unsolved
-                                                    </span>
-                                                </div>
-                                                <p className="mt-4">
-                                                    Can someone explain the
-                                                    concept of double integrals
-                                                    in a simple way?
-                                                </p>
-                                                <div className="d-flex justify-content-between align-items-center">
-                                                    <small className="text-muted">
-                                                        5 minutes ago
-                                                    </small>
-                                                    <button
-                                                        className="btn btn-light btn-sm"
-                                                        style={{
-                                                            backgroundColor:
-                                                                "#174267",
-                                                            color: "white",
-                                                        }}
-                                                    >
-                                                        Respond
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="col-12 col-md-6 col-lg-4">
-                                        <div className="card">
-                                            <div className="card-body">
-                                                <div className="d-flex justify-content-between">
-                                                    <h5 className="mb-0">
-                                                        <span>Subject</span>
-                                                        <i className="ti ti-chevron-right" />
-                                                        <span>Chapter</span>
-                                                    </h5>
-                                                    <span className="badge bg-danger">
-                                                        Unsolved
-                                                    </span>
-                                                </div>
-                                                <p className="mt-4">
-                                                    What are the three laws of
-                                                    motion formulated by Newton?
-                                                </p>
-                                                <div className="d-flex justify-content-between align-items-center">
-                                                    <small className="text-muted">
-                                                        10 minutes ago
-                                                    </small>
-                                                    <button
-                                                        className="btn btn-light btn-sm"
-                                                        style={{
-                                                            backgroundColor:
-                                                                "#174267",
-                                                            color: "white",
-                                                        }}
-                                                    >
-                                                        Respond
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="col-12 col-md-6 col-lg-4">
-                                        <div className="card">
-                                            <div className="card-body">
-                                                <div className="d-flex justify-content-between">
-                                                    <h5 className="mb-0">
-                                                        <span>Subject</span>
-                                                        <i className="ti ti-chevron-right" />
-                                                        <span>Chapter</span>
-                                                    </h5>
-                                                    <span className="badge bg-success">
-                                                        Solved
-                                                    </span>
-                                                </div>
-                                                <p className="mt-4">
-                                                    Can you help me understand
-                                                    the structure of organic
-                                                    compounds?
-                                                </p>
-                                                <div className="d-flex justify-content-between align-items-center">
-                                                    <small className="text-muted">
-                                                        15 minutes ago
-                                                    </small>
-                                                    <button
-                                                        className="btn btn-light btn-sm"
-                                                        style={{
-                                                            backgroundColor:
-                                                                "#174267",
-                                                            color: "white",
-                                                        }}
-                                                    >
-                                                        Respond
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    {doubts.length > 0
+                                        ? doubts.map((doubt) => (
+                                              <RecentDoubtCard
+                                                  className={doubt?.class?.name}
+                                                  subject={doubt?.subject?.name}
+                                                  chapter={doubt?.chapter?.name}
+                                                  status={doubt?.status}
+                                                  text={doubt?.text}
+                                                  image={`${assetsUrl}/${doubt?.image}`}
+                                                  audio={`${assetsUrl}/${doubt?.audio}`}
+                                                  created_at={doubt?.created_at}
+                                                  student={doubt?.student?.name}
+                                              />
+                                          ))
+                                        : ""}
                                 </div>
                             </div>
                         </div>
