@@ -23,5 +23,10 @@ class SolvedDoubt extends Model
     public function doubt(){
         return $this->belongsTo(Doubt::class,'doubt_id','id');
     }
+
+    // function for realtion between solves and solver
+    public function solver() {
+        return $this->hasOne(User::class,"solver","id");
+    }
     
 }

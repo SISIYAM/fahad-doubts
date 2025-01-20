@@ -33,6 +33,12 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    
+
+    // function for realtion between solver and solved doubts
+    public function solver() {
+        return $this->hasMany(Doubt::class,"solver_id","id");
+    }
     /**
      * Get the attributes that should be cast.
      *
