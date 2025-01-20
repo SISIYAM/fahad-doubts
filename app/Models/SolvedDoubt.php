@@ -10,7 +10,7 @@ class SolvedDoubt extends Model
     
     protected $fillable = [
         'doubt_id',
-        'solver_id	',
+        'solver_id',
         'text',  
         'image',  
         'audio',  

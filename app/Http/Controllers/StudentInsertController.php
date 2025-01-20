@@ -92,7 +92,7 @@ class StudentInsertController extends Controller
             if ($req->hasFile('audio')) {
                 $audio = $req->file('audio');            
                 $extension = $audio->getClientOriginalExtension();
-                $fileName = $slug . '-'.uniqid().'.' . $extension;
+                $fileName = $slug . '-'.time().'.' . $extension;
                 $audioPath = $audio->storeAs('comment/audios', $fileName, 'public');
             }
             
@@ -101,7 +101,7 @@ class StudentInsertController extends Controller
             if ($req->hasFile('image')) {
                 $image = $req->file('image');
                 $extension = $image->getClientOriginalExtension();
-                $customImageName = $slug . '-'.uniqid().'.' . $extension; 
+                $customImageName = $slug . '-'.time().'.' . $extension; 
                 $imagePath = $image->storeAs('comment/images', $customImageName, 'public'); 
             } 
             

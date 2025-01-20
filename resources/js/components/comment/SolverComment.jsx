@@ -7,7 +7,7 @@ function SolverComment({ text, image, audio, assetsUrl }) {
                 <div className="d-flex align-items-center mb-2">
                     <img
                         className="rounded-circle img-fluid wid-30"
-                        src="../assets/images/user/avatar-2.jpg"
+                        src="/assets/images/user/avatar-2.jpg"
                         alt="Solver image"
                     />
                     <h6 className="ms-2 mb-0 text-primary">Solver</h6>

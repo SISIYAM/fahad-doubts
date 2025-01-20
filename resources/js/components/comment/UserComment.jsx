@@ -7,7 +7,7 @@ function UserComment({ text, image, audio, assetsUrl }) {
                 <div className="d-flex align-items-center mb-2">
                     <img
                         className="rounded-circle img-fluid wid-30"
-                        src="../assets/images/user/avatar-5.jpg"
+                        src="/assets/images/user/avatar-5.jpg"
                         alt="User image"
                     />
                     <h6 className="ms-2 mb-0">Student</h6>

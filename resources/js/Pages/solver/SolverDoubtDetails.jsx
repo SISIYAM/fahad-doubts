@@ -1,11 +1,12 @@
 import React from "react";
 import Layout from "@/layouts/Layout";
-import DoubtCard from "../../components/DoubtCard";
-import { timeAgo } from "../../helper/Helper";
-import UserComment from "../../components/comment/UserComment";
-import SolverComment from "../../components/comment/SolverComment";
-import CommentForm from "../../components/comment/CommentForm";
+import { timeAgo } from "@/helper/Helper";
+import UserComment from "@/components/comment/UserComment";
+import SolverComment from "@/components/comment/SolverComment";
+import CommentForm from "@/components/comment/CommentForm";
 import { toast, ToastContainer } from "react-toastify";
+import SolverDoubtCard from "@/components/solver/SolverDoubtCard";
+import SolutionForm from "../../components/SolutionForm";
 
 function SolveDetails({ auth, doubtDetails, env, flash, errors }) {
     const assetsUrl = env.ASSETS_URL;
@@ -34,7 +35,7 @@ function SolveDetails({ auth, doubtDetails, env, flash, errors }) {
         <>
             <ToastContainer />
             <div className="row">
-                <DoubtCard
+                <SolverDoubtCard
                     className={doubtDetails?.class?.name}
                     subject={doubtDetails?.subject?.name}
                     chapter={doubtDetails?.chapter?.name}
@@ -60,15 +61,6 @@ function SolveDetails({ auth, doubtDetails, env, flash, errors }) {
                                     >
                                         Solution
                                     </h3>
-                                </div>
-                                <div className="d-flex justify-content-between align-items-center gap-3">
-                                    <button
-                                        type="button"
-                                        className="btn btn-danger d-inline-flex align-items-center"
-                                    >
-                                        <i className="ti ti-alert-triangle me-2" />{" "}
-                                        Report
-                                    </button>
                                 </div>
                             </div>
                             <hr />

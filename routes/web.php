@@ -77,12 +77,14 @@ Route::middleware([AuthMiddleware::class])->group(function () {
             // route for load post doubts page
             Route::get("/locked/doubt","loadLockedDoubt")->name("solver.locked.doubt");
             Route::get("/browse/doubt","loadBrowseDoubt")->name("solver.browse.doubt");
-            
+             // route for load doubt details page
+            Route::get("/solver/doubt/{slug?}","loadSolverDoubtDetails")->name("solver.doubt.details");
         });
 
         #=== Routes for solver insert controller
         Route::controller(SolverInsertController::class)->group(function() {
-            
+            // route for submit solution
+            Route::post("/execute/doubt/submit/solution","submitSolution")->name("execute.solver.submit.solution");
         });
     });
 
