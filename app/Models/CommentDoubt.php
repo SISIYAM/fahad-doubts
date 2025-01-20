@@ -21,4 +21,9 @@ class CommentDoubt extends Model
     public function doubt() {
         return $this->belongsTo(Doubt::class,'doubt_id','id');
     }
+
+    // relation between user and comment and user
+    public function user() {
+        return $this->hasOne(User::class,"id","user_id");
+    }
 }
