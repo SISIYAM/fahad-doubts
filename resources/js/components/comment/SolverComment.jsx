@@ -1,6 +1,6 @@
 import React from "react";
 
-function SolverComment({ text, image, audio }) {
+function SolverComment({ text, image, audio, assetsUrl }) {
     return (
         <div className="card mt-2 ms-5 border-start border-primary border-3">
             <div className="card-body">

@@ -9,7 +9,7 @@ class CommentDoubt extends Model
 {
     protected $fillable = [
         'doubt_id',
-        'user_id	',
+        'user_id',
         'text',  
         'image',  
         'audio',  

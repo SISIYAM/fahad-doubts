@@ -65,6 +65,8 @@ Route::middleware([AuthMiddleware::class])->group(function () {
         Route::controller(StudentInsertController::class)->group(function() {
             // for insert doubts
             Route::post("/execute/add/doubt","insertDoubt")->name("execute.add.doubt");
+            // route for insert student commetn
+            Route::post("/execute/student/add/comment","insertComment")->name("execute.student.add.comment");
         });
     });
 

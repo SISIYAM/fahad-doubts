@@ -5,12 +5,34 @@ import { timeAgo } from "../../helper/Helper";
 import UserComment from "../../components/comment/UserComment";
 import SolverComment from "../../components/comment/SolverComment";
 import CommentForm from "../../components/comment/CommentForm";
+import { toast, ToastContainer } from "react-toastify";
 
-function SolveDetails({ auth, doubtDetails, env }) {
+function SolveDetails({ auth, doubtDetails, env, flash, errors }) {
     const assetsUrl = env.ASSETS_URL;
+
+    // show success message
+    if (flash.success) {
+        toast.success(flash.success);
+
+        flash.success = null;
+    }
+
+    // Show error message
+    if (flash.error) {
+        toast.error(flash.error);
+        flash.error = null;
+    }
+
+    if (errors) {
+        Object.values(errors).forEach((error) => {
+            toast.error(error);
+        });
+        errors = null;
+    }
 
     return (
         <>
+            <ToastContainer />
             <div className="row">
                 <DoubtCard
                     className={doubtDetails?.class?.name}
@@ -127,7 +149,9 @@ function SolveDetails({ auth, doubtDetails, env }) {
                 </div>
             </div>
 
-            {auth?.user?.id == doubtDetails?.student?.id && <CommentForm />}
+            {auth?.user?.id == doubtDetails?.student?.id && (
+                <CommentForm user={auth?.user} doubt={doubtDetails} />
+            )}
 
             {/* [ Main Content ] end */}
         </>
