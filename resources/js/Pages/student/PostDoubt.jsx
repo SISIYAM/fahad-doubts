@@ -3,8 +3,18 @@ import Layout from "@/layouts/Layout";
 import { router } from "@inertiajs/react";
 import { route } from "ziggy-js";
 import { toast, ToastContainer } from "react-toastify";
+import DoubtCard from "../../components/DoubtCard";
 
-function PostDoubt({ classes, subjects, chapters, errors, flash }) {
+function PostDoubt({
+    doubts,
+    classes,
+    subjects,
+    chapters,
+    errors,
+    flash,
+    env,
+}) {
+    const assetsUrl = env.ASSETS_URL;
     const [image, setImage] = useState(null);
     const [audio, setAudio] = useState(null);
     const [isRecording, setIsRecording] = useState(false);
@@ -522,6 +532,34 @@ function PostDoubt({ classes, subjects, chapters, errors, flash }) {
                         </div>
                     </div>
                 </div>
+            </div>
+            <div className="row">
+                <h2
+                    className="doubts-title mb-4 mt-5"
+                    style={{
+                        color: "#174267",
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: 5,
+                    }}
+                >
+                    Your Doubts <i className="ti ti-arrow-right" />
+                </h2>
+                {doubts.length > 0
+                    ? doubts.map((doubt) => (
+                          <DoubtCard
+                              className={doubt?.class?.name}
+                              subject={doubt?.subject?.name}
+                              chapter={doubt?.chapter?.name}
+                              status={doubt?.status}
+                              text={doubt?.text}
+                              image={`${assetsUrl}/${doubt?.image}`}
+                              audio={`${assetsUrl}/${doubt?.audio}`}
+                              created_at={doubt?.created_at}
+                              student={doubt?.student?.name}
+                          />
+                      ))
+                    : ""}
             </div>
             {/* [ Main Content ] end */}
         </>

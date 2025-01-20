@@ -8,9 +8,19 @@ use App\Models\Chapter;
 use App\Models\Subject;
 use App\Models\StudentClass;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class StudentController extends Controller
 {
+
+    protected $loggedInUserId;
+
+    public function __construct()
+    {
+        // Set the logged-in user's ID
+        $this->loggedInUserId = Auth::id();
+    }
+
     // function for load post doubt page
     public function loadPostDoubt() {
 
@@ -25,9 +35,11 @@ class StudentController extends Controller
              $query->with("class");
          },"subject"])->get();
  
-        //  return $chapters;
+        
+         // search user doubts 
+         $doubts = Doubt::where('user_id',$this->loggedInUserId)->orderBy('id','desc')->with('student','class','subject','chapter')->get();
 
-        return Inertia::render("student/PostDoubt",['classes' => $classes,'subjects' => $subjects,'chapters' => $chapters]);
+        return Inertia::render("student/PostDoubt",['doubts' => $doubts,'classes' => $classes,'subjects' => $subjects,'chapters' => $chapters]);
     }
 
     // function for load explore doubts page
