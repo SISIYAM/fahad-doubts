@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import Layout from "@/layouts/Layout";
-import { router } from "@inertiajs/react";
+import { Link, router } from "@inertiajs/react";
 import { route } from "ziggy-js";
 import { toast, ToastContainer } from "react-toastify";
 import DoubtCard from "../../components/DoubtCard";
@@ -553,10 +553,12 @@ function PostDoubt({
                               chapter={doubt?.chapter?.name}
                               status={doubt?.status}
                               text={doubt?.text}
-                              image={`${assetsUrl}/${doubt?.image}`}
-                              audio={`${assetsUrl}/${doubt?.audio}`}
+                              image={doubt?.image}
+                              audio={doubt?.audio}
+                              assetsUrl={assetsUrl}
                               created_at={doubt?.created_at}
                               student={doubt?.student?.name}
+                              slug={doubt?.slug}
                           />
                       ))
                     : ""}

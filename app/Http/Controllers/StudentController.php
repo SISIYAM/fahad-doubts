@@ -54,7 +54,7 @@ class StudentController extends Controller
     public function loadDoubtDetails(string $slug = null) {
         
         // search doubt  details
-        $doubtDetails = Doubt::where(compact('slug'))->with('student','class','subject','chapter','solve','comments.user')->first();
+        $doubtDetails = Doubt::where(compact('slug'))->with('student','student','class','subject','chapter','solve','comments.user')->first();
         
         return Inertia::render("student/SolveDetails",['doubtDetails' => $doubtDetails]);
 

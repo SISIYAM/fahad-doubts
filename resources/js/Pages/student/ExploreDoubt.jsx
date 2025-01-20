@@ -72,10 +72,12 @@ function ExploreDoubt({ doubts, env }) {
                               chapter={doubt?.chapter?.name}
                               status={doubt?.status}
                               text={doubt?.text}
-                              image={`${assetsUrl}/${doubt?.image}`}
-                              audio={`${assetsUrl}/${doubt?.audio}`}
+                              image={doubt?.image}
+                              audio={doubt?.audio}
+                              assetsUrl={assetsUrl}
                               created_at={doubt?.created_at}
                               student={doubt?.student?.name}
+                              slug={doubt?.slug}
                           />
                       ))
                     : ""}
