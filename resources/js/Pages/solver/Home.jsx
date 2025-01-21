@@ -3,7 +3,7 @@ import React from "react";
 
 import Layout from "@/layouts/Layout";
 
-function Home() {
+function Home({ doubts }) {
     const { auth } = usePage().props;
     const role = auth?.user?.role;
 
@@ -20,7 +20,9 @@ function Home() {
                             <div className="row">
                                 <div>
                                     <div className="p-4 d-flex flex-column align-items-center gap-4">
-                                        <h1 className="text-white">0</h1>
+                                        <h1 className="text-white">
+                                            {doubts.length}
+                                        </h1>
                                         <h2 className="text-white mb-0">
                                             Solved this month
                                         </h2>
@@ -58,9 +60,11 @@ function Home() {
                             <div className="row">
                                 <div>
                                     <div className="p-4 d-flex flex-column align-items-center gap-4">
-                                        <h1 className="text-white">0</h1>
+                                        <h1 className="text-white">
+                                            {doubts.length}
+                                        </h1>
                                         <h2 className="text-white mb-0">
-                                            Total Solved
+                                            Total Satisfied
                                         </h2>
                                     </div>
                                 </div>

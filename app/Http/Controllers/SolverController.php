@@ -19,6 +19,7 @@ class SolverController extends Controller
         // search doubts
         $doubts = Doubt::orderBy('status', 'asc') 
                ->orderBy('id', 'desc')    
+               ->with('student','class','subject','chapter')
                ->get();
 
         

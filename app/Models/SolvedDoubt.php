@@ -26,7 +26,7 @@ class SolvedDoubt extends Model
 
     // function for realtion between solves and solver
     public function solver() {
-        return $this->hasOne(User::class,"solver","id");
+        return $this->hasOne(User::class,"id","solver_id");
     }
     
 }

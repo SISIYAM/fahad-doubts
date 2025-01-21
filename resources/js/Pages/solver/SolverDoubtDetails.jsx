@@ -36,7 +36,7 @@ function SolveDetails({ auth, doubtDetails, env, flash, errors }) {
             <ToastContainer />
             <div className="row">
                 <SolverDoubtCard
-                    className={doubtDetails?.class?.name}
+                    class_name={doubtDetails?.class?.name}
                     subject={doubtDetails?.subject?.name}
                     chapter={doubtDetails?.chapter?.name}
                     status={doubtDetails?.status}

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Inertia\Inertia;
 use App\Models\Doubt;
+use App\Models\SolvedDoubt;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -31,7 +32,9 @@ class DashboardController extends Controller
         }
     
         if(Gate::allows("isSolver")){
-            return Inertia::render("solver/Home");
+            // search posted doubts by user
+            $doubts = SolvedDoubt::where('solver_id',$this->loggedInUserId)->with('doubt','solver')->get();
+            return Inertia::render("solver/Home",['doubts' => $doubts]);
         }
 
         if (Gate::allows("isAdmin")) {

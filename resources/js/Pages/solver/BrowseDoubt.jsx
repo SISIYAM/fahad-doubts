@@ -4,6 +4,7 @@ import SolverDoubtCard from "@/components/solver/SolverDoubtCard";
 
 function BrowseDoubt({ doubts, env }) {
     const assetsUrl = env.ASSETS_URL;
+    console.log(doubts);
     return (
         <>
             <div className="row">
