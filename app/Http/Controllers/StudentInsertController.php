@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CommentDoubt;
 use App\Models\Doubt;
-use App\Models\SolvedDoubt;
 use Pest\Support\Str;
+use App\Models\SolvedDoubt;
+use App\Models\CommentDoubt;
+use App\Models\Report;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use phpDocumentor\Reflection\Types\Null_;
+
 
 class StudentInsertController extends Controller
 {
@@ -138,4 +140,33 @@ class StudentInsertController extends Controller
    
         }
     }
+
+    // function for student information 
+    public function submitStudentReport(Request $req)
+    {
+     
+        $validated = $req->validate([
+            'doubt_id' => 'required|integer',
+            'solve_id' => 'required|integer',
+            'solver_id' => 'required|integer',
+            'student_id' => 'required|integer',
+            'text' => 'required|string|max:500', 
+        ]);
+    
+        try {
+
+            // update solved doubts table and mark as reported
+            SolvedDoubt::where('id',$req->solve_id)->update([
+                'isReported' => 1,
+            ]);
+
+            // Insert report details into the reports table
+            Report::create($validated);
+
+            return to_route('student.doubt.details', $req->slug)->with('success', 'Thanks for sharing your feedback!');
+        } catch (\Exception $e) {
+            return to_route('student.doubt.details', $req->slug)->with('error', 'An error occurred while submitting your feedback.');
+        }
+    }
+    
 }

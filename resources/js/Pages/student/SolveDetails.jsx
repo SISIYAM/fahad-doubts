@@ -7,6 +7,7 @@ import SolverComment from "@/components/comment/SolverComment";
 import CommentForm from "@/components/comment/CommentForm";
 import { toast, ToastContainer } from "react-toastify";
 import SatisfiedBtn from "@/components/student/SatisfiedBtn";
+import ReportBtn from "@/components/student/ReportBtn";
 
 function SolveDetails({ auth, doubtDetails, env, flash, errors }) {
     const assetsUrl = env.ASSETS_URL;
@@ -63,13 +64,10 @@ function SolveDetails({ auth, doubtDetails, env, flash, errors }) {
                                     </h3>
                                 </div>
                                 <div className="d-flex justify-content-between align-items-center gap-3">
-                                    <button
-                                        type="button"
-                                        className="btn btn-danger d-inline-flex align-items-center"
-                                    >
-                                        <i className="ti ti-alert-triangle me-2" />{" "}
-                                        Report
-                                    </button>
+                                    <ReportBtn
+                                        doubtDetails={doubtDetails}
+                                        user={auth?.user}
+                                    />
                                     <SatisfiedBtn
                                         user={auth?.user}
                                         solution_id={doubtDetails?.solve?.id}

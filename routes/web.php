@@ -69,6 +69,8 @@ Route::middleware([AuthMiddleware::class])->group(function () {
             Route::post("/execute/student/add/comment","insertComment")->name("execute.student.add.comment");
             // route for handle student satisfaction
             Route::post("/execute/student/satisfiction","submitStudentSatisfaction")->name("execute.student.satisfaction");
+            // route for submit report
+            Route::post("/execute/student/report","submitStudentReport")->name("execute.student.report");
         });
     });
 
