@@ -7,6 +7,7 @@ import { toast, ToastContainer } from "react-toastify";
 import SolverDoubtCard from "@/components/solver/SolverDoubtCard";
 import SolutionForm from "../../components/SolutionForm";
 import SolverCommentForm from "../../components/comment/SolverCommentForm";
+import LockDoubt from "../../components/solver/LockDoubt";
 
 function SolveDetails({ auth, doubtDetails, env, flash, errors }) {
     const assetsUrl = env.ASSETS_URL;
@@ -62,6 +63,12 @@ function SolveDetails({ auth, doubtDetails, env, flash, errors }) {
                                         Solution
                                     </h3>
                                 </div>
+                                <LockDoubt
+                                    doubt_id={doubtDetails.id}
+                                    status={doubtDetails.status}
+                                    slug={doubtDetails.slug}
+                                    locked_at={doubtDetails.locked_at}
+                                />
                             </div>
                             <hr />
                             <div className="row">

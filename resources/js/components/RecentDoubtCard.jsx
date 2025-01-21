@@ -25,12 +25,12 @@ function RecentDoubtCard({
                             <span>{chapter ? chapter : "Undefined"}</span>
                         </h6>
                         {status === 0 ? (
-                            <span className="badge bg-danger">Deactivated</span>
+                            <span className="badge bg-danger">Locked</span>
                         ) : status === 1 ? (
                             <span className="badge bg-warning">Unsolved</span>
-                        ) : (
+                        ) : status === 2 ? (
                             <span className="badge bg-success">Solved</span>
-                        )}
+                        ) : null}
                     </div>
                     <p className="mt-4">{text}</p>
 

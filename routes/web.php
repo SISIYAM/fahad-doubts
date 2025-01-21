@@ -87,6 +87,8 @@ Route::middleware([AuthMiddleware::class])->group(function () {
             Route::post("/execute/doubt/submit/solution","submitSolution")->name("execute.solver.submit.solution");
             // route for insert solver comment
             Route::post("/execute/solver/add/comment","insertComment")->name("execute.solver.add.comment");
+            // route for lock doubt
+            Route::post("/execute/lock/doubt","lockDoubt")->name("execute.lock.doubt");
         });
     });
 

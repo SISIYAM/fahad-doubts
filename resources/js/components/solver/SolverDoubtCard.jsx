@@ -48,7 +48,7 @@ function SolverDoubtCard({
                                         }}
                                         className="badge bg-danger"
                                     >
-                                        Deactivated
+                                        Locked
                                     </span>
                                 ) : status === 1 ? (
                                     <span
@@ -60,7 +60,7 @@ function SolverDoubtCard({
                                     >
                                         Unsolved
                                     </span>
-                                ) : (
+                                ) : status === 2 ? (
                                     <span
                                         style={{
                                             padding: "5px 20px",
@@ -70,7 +70,7 @@ function SolverDoubtCard({
                                     >
                                         Solved
                                     </span>
-                                )}
+                                ) : null}
                             </div>
                         </div>
                         <hr style={{ color: "#FFE81C" }} id="specialhr" />

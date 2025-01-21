@@ -40,7 +40,7 @@ function DoubtCard({
                                 </h5>
                             </div>
                             <div>
-                                {status === 0 ? (
+                                {status == 0 ? (
                                     <span
                                         style={{
                                             padding: "5px 20px",
@@ -48,9 +48,9 @@ function DoubtCard({
                                         }}
                                         className="badge bg-danger"
                                     >
-                                        Deactivated
+                                        Locked
                                     </span>
-                                ) : status === 1 ? (
+                                ) : status == 1 ? (
                                     <span
                                         style={{
                                             padding: "5px 20px",
@@ -60,7 +60,7 @@ function DoubtCard({
                                     >
                                         Unsolved
                                     </span>
-                                ) : (
+                                ) : status == 2 ? (
                                     <span
                                         style={{
                                             padding: "5px 20px",
@@ -70,7 +70,7 @@ function DoubtCard({
                                     >
                                         Solved
                                     </span>
-                                )}
+                                ) : null}
                             </div>
                         </div>
                         <hr style={{ color: "#FFE81C" }} id="specialhr" />

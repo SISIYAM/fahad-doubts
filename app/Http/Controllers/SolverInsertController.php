@@ -53,8 +53,7 @@ class SolverInsertController extends Controller
             
             // Add file paths to validated data
             $validatedData['image'] = $imagePath;
-            $validatedData['audio'] = $audioPath;  
-            $validatedData['status'] = 2;  
+            $validatedData['audio'] = $audioPath;   
             $validatedData['solver_id'] = $this->loggedInUserId; 
             
             // Insert data into the database
@@ -125,4 +124,35 @@ class SolverInsertController extends Controller
    
         }
     }
+
+    // method for lock doubt
+    public function lockDoubt(Request $req) {
+        $slug = $req->slug;
+        try {
+           
+            $updateData = [
+                'status' => $req->status,
+            ];
+    
+            if ($req->status == 1) {
+              
+                $updateData['locked_by'] = null;
+                $updateData['locked_at'] = null;
+                $message = "Doubt has been unlocked";
+            } else {
+               
+                $updateData['locked_by'] = $this->loggedInUserId;
+                $updateData['locked_at'] = now();
+                $message = "Doubt has been locked";
+            }
+    
+            
+            $doubt = Doubt::where('id', $req->doubt_id)->update($updateData);
+    
+            return to_route("solver.doubt.details", $slug)->with('success', $message);
+        } catch (\Exception $e) {
+            return to_route("solver.doubt.details", $slug)->with('error', 'An error occurred while updating the doubt status.');
+        }
+    }
+    
 }

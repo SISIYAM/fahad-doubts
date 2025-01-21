@@ -6,6 +6,7 @@ import UserComment from "../../components/comment/UserComment";
 import SolverComment from "../../components/comment/SolverComment";
 import CommentForm from "../../components/comment/CommentForm";
 import { toast, ToastContainer } from "react-toastify";
+import SolutionForm from "../../components/SolutionForm";
 
 function SolveDetails({ auth, doubtDetails, env, flash, errors }) {
     const assetsUrl = env.ASSETS_URL;
