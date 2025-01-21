@@ -29,7 +29,7 @@ class DashboardController extends Controller
         if (Gate::allows("isStudent")) {
             // search posted doubts by user
             $doubts = Doubt::where('user_id',$this->loggedInUserId)->with('student','class','subject','chapter')->take(3)->get();
-
+            // return $doubts;
             return Inertia::render("student/Home",['doubts' => $doubts]);
         }
     

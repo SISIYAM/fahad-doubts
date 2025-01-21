@@ -1,5 +1,7 @@
 import React from "react";
 import { timeAgo } from "../helper/Helper";
+import { Link } from "@inertiajs/react";
+import { route } from "ziggy-js";
 
 function RecentDoubtCard({
     className,
@@ -11,6 +13,8 @@ function RecentDoubtCard({
     audio,
     created_at,
     student,
+    assetsUrl,
+    slug,
 }) {
     return (
         <div className="col-12 col-md-6 col-lg-4">
@@ -38,15 +42,16 @@ function RecentDoubtCard({
                         <small className="text-muted">
                             {timeAgo(created_at)}
                         </small>
-                        <button
+                        <Link
+                            href={route("student.doubt.details", slug)}
                             className="btn btn-light btn-sm"
                             style={{
                                 backgroundColor: "#174267",
                                 color: "white",
                             }}
                         >
-                            Respond
-                        </button>
+                            See Response
+                        </Link>
                     </div>
                 </div>
             </div>

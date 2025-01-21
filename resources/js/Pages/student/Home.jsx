@@ -6,6 +6,12 @@ function Home({ auth, doubts, env }) {
     const name = auth?.user?.name;
     const email = auth?.user?.email;
     const assetsUrl = env.ASSETS_URL;
+
+    // count solved and unsolved doubts
+    const solvedDoubts = doubts.filter((doubt) => doubt.status == "2").length;
+    // count unsolved doubts
+    const unsolvedDoubts = doubts.filter((doubt) => doubt.status == "1").length;
+
     return (
         <>
             <div>
@@ -52,7 +58,7 @@ function Home({ auth, doubts, env }) {
                                 <h5 className="card-title">
                                     Total Solved Doubts
                                 </h5>
-                                <p className="card-text">85</p>
+                                <p className="card-text">{solvedDoubts}</p>
                             </div>
                         </div>
                     </div>
@@ -62,7 +68,7 @@ function Home({ auth, doubts, env }) {
                                 <h5 className="card-title">
                                     Total Unsolved Doubts
                                 </h5>
-                                <p className="card-text">35</p>
+                                <p className="card-text">{unsolvedDoubts}</p>
                             </div>
                         </div>
                     </div>
@@ -83,10 +89,12 @@ function Home({ auth, doubts, env }) {
                                                   chapter={doubt?.chapter?.name}
                                                   status={doubt?.status}
                                                   text={doubt?.text}
-                                                  image={`${assetsUrl}/${doubt?.image}`}
-                                                  audio={`${assetsUrl}/${doubt?.audio}`}
+                                                  image={doubt?.image}
+                                                  audio={doubt?.audio}
                                                   created_at={doubt?.created_at}
                                                   student={doubt?.student?.name}
+                                                  assetsUrl={assetsUrl}
+                                                  slug={doubt?.slug}
                                               />
                                           ))
                                         : ""}
