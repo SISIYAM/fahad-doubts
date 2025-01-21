@@ -5,9 +5,9 @@ import UserComment from "@/components/comment/UserComment";
 import SolverComment from "@/components/comment/SolverComment";
 import { toast, ToastContainer } from "react-toastify";
 import SolverDoubtCard from "@/components/solver/SolverDoubtCard";
-import SolutionForm from "../../components/SolutionForm";
-import SolverCommentForm from "../../components/comment/SolverCommentForm";
-import LockDoubt from "../../components/solver/LockDoubt";
+import SolutionForm from "@/components/SolutionForm";
+import SolverCommentForm from "@/components/comment/SolverCommentForm";
+import LockDoubt from "@/components/solver/LockDoubt";
 
 function SolveDetails({ auth, doubtDetails, env, flash, errors }) {
     const assetsUrl = env.ASSETS_URL;
@@ -17,6 +17,13 @@ function SolveDetails({ auth, doubtDetails, env, flash, errors }) {
         toast.success(flash.success);
 
         flash.success = null;
+    }
+
+    // show warning message
+    if (flash.warning) {
+        toast.warning(flash.warning);
+
+        flash.warning = null;
     }
 
     // Show error message

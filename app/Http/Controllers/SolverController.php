@@ -5,12 +5,31 @@ namespace App\Http\Controllers;
 use Inertia\Inertia;
 use App\Models\Doubt;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SolverController extends Controller
 {
+
+    protected $loggedInUserId;
+
+    public function __construct()
+    {
+        // Set the logged-in user's ID
+        $this->loggedInUserId = Auth::id();
+    }
+
     // function for load locked doubts page
     public function loadLockedDoubt() {
-        return Inertia::render("solver/LockedDoubt");
+        // search doubts
+        $doubts = Doubt::where('status',0)
+               ->where('locked_by',$this->loggedInUserId)
+               ->orderBy('status', 'asc') 
+               ->orderBy('id', 'desc')    
+               ->with('student','class','subject','chapter')
+               ->get();
+
+        
+        return Inertia::render("solver/LockedDoubt",['doubts' => $doubts]);
     }
 
     // function for load browse doubts

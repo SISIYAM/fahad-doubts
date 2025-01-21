@@ -129,6 +129,17 @@ class SolverInsertController extends Controller
     public function lockDoubt(Request $req) {
         $slug = $req->slug;
         try {
+            
+            // Check if the solver has already locked any question
+            $existingLockedDoubt = Doubt::where('status', 0)
+            ->where('locked_by', $this->loggedInUserId)
+            ->get();
+
+            if ($existingLockedDoubt->count() > 0) {
+            return to_route("solver.doubt.details", $slug)
+                ->with('warning', 'You have already locked a question. Please unlock or solve the current question before locking a new one.');
+            }
+
            
             $updateData = [
                 'status' => $req->status,
