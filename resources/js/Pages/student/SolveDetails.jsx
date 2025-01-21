@@ -1,12 +1,12 @@
 import React from "react";
 import Layout from "@/layouts/Layout";
-import DoubtCard from "../../components/DoubtCard";
-import { timeAgo } from "../../helper/Helper";
-import UserComment from "../../components/comment/UserComment";
-import SolverComment from "../../components/comment/SolverComment";
-import CommentForm from "../../components/comment/CommentForm";
+import DoubtCard from "@/components/DoubtCard";
+import { timeAgo } from "@/helper/Helper";
+import UserComment from "@/components/comment/UserComment";
+import SolverComment from "@/components/comment/SolverComment";
+import CommentForm from "@/components/comment/CommentForm";
 import { toast, ToastContainer } from "react-toastify";
-import SolutionForm from "../../components/SolutionForm";
+import SatisfiedBtn from "@/components/student/SatisfiedBtn";
 
 function SolveDetails({ auth, doubtDetails, env, flash, errors }) {
     const assetsUrl = env.ASSETS_URL;
@@ -70,8 +70,17 @@ function SolveDetails({ auth, doubtDetails, env, flash, errors }) {
                                         <i className="ti ti-alert-triangle me-2" />{" "}
                                         Report
                                     </button>
+                                    <SatisfiedBtn
+                                        user={auth?.user}
+                                        solution_id={doubtDetails?.solve?.id}
+                                        doubtDetails={doubtDetails}
+                                        isSatisfied={
+                                            doubtDetails?.solve?.isSatisfied
+                                        }
+                                    />
                                 </div>
                             </div>
+
                             <hr />
                             <div className="row">
                                 {doubtDetails.status == 2 ? (
@@ -120,10 +129,9 @@ function SolveDetails({ auth, doubtDetails, env, flash, errors }) {
                                         </div>
                                     </>
                                 ) : (
-                                    <SolutionForm
-                                        user={auth?.user}
-                                        doubt={doubtDetails}
-                                    />
+                                    <div className="alert alert-danger">
+                                        No solution added yet!
+                                    </div>
                                 )}
                             </div>
                         </div>

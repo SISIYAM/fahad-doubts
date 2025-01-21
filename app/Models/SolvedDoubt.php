@@ -14,7 +14,9 @@ class SolvedDoubt extends Model
         'text',  
         'image',  
         'audio',  
-        'status',  
+        'status',
+        'isSatisfied',
+        'isReported'
         
     ];
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\CommentDoubt;
 use App\Models\Doubt;
+use App\Models\SolvedDoubt;
 use Pest\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -117,8 +118,23 @@ class StudentInsertController extends Controller
             // insert into db
             return to_route("student.doubt.details",$slug)->with('success','Comment Posted Successfully.');
         } catch (\Exception $e) {
-            return $e;
             return to_route("student.doubt.details",$slug)->with('error', 'An error occurred while submitting your Comment.');
+   
+        }
+    }
+
+    // method for submit student satisfaction
+    public function submitStudentSatisfaction(Request $req) {
+        $slug = $req->slug;
+        
+        try {
+            $findSolution = SolvedDoubt::where('id',$req->solution_id)->first();
+            // now update user satisfaction
+            $findSolution->update(['isSatisfied' => $req->isSatisfied]);
+    
+            return to_route("student.doubt.details",$slug)->with('success','Thanks for share your feedback!');
+        } catch (\Exception $e) {
+            return to_route("student.doubt.details",$slug)->with('error', 'An error occurred while submitting your feedback.');
    
         }
     }
