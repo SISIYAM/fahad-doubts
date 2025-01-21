@@ -2,11 +2,12 @@ import React, { useState, useEffect } from "react";
 import { useForm } from "@inertiajs/react";
 import { route } from "ziggy-js";
 
-function LockDoubt({ doubt_id, status, slug, locked_at }) {
+function LockDoubt({ doubt, doubt_id, status, slug, locked_at, user }) {
     const { data, setData, post } = useForm({
         doubt_id,
         status,
         slug,
+        difficulty: "1",
     });
 
     const [timeLeft, setTimeLeft] = useState(0);
@@ -14,19 +15,17 @@ function LockDoubt({ doubt_id, status, slug, locked_at }) {
 
     useEffect(() => {
         if (status === 0 && locked_at) {
-            // Ensure the locked_at value is parsed correctly
             const lockedTime = new Date(locked_at).getTime();
             console.log("locked_at:", locked_at);
             console.log("lockedTime:", lockedTime);
 
-            // If the lockedTime is invalid, log an error and return
             if (isNaN(lockedTime)) {
                 console.error("Invalid locked_at date format:", locked_at);
                 return;
             }
 
-            // Calculate the end time (locked_at + 1 hour)
-            const endTime = lockedTime + 60 * 60 * 1000; // Add 1 hour to locked_at
+            // calculate the end time
+            const endTime = lockedTime + 60 * 60 * 1000;
 
             const interval = setInterval(() => {
                 const now = Date.now();
@@ -47,7 +46,6 @@ function LockDoubt({ doubt_id, status, slug, locked_at }) {
         }
     }, [status, locked_at]);
 
-    // Format the remaining time as HH:mm:ss
     const formatTime = (timeInMs) => {
         const hours = Math.floor(timeInMs / 3600000);
         const minutes = Math.floor((timeInMs % 3600000) / 60000);
@@ -57,31 +55,41 @@ function LockDoubt({ doubt_id, status, slug, locked_at }) {
             .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
     };
 
-    // Handle form submission to lock/unlock the doubt
     const handleSubmit = (e) => {
         e.preventDefault();
         post(route("execute.lock.doubt"), data);
     };
 
     return (
-        <div className="d-flex justify-content-between align-items-center gap-3">
-            {/* Display timer if doubt is locked */}
-            {status === 0 && timerActive && (
-                <div class="countdown-timer bg-danger text-light px-3 py-1 rounded fw-bold fs-5 d-flex align-items-center">
-                    <i class="ti ti-clock me-1"></i>
-                    <span id="countdown">{formatTime(timeLeft)}</span>
-                </div>
-            )}
+        <form onSubmit={handleSubmit}>
+            <div className="d-flex justify-content-between align-items-center gap-3">
+                {/* Display timer if doubt is locked */}
+                {status === 0 && timerActive && (
+                    <div class="countdown-timer bg-danger text-light px-3 py-1 rounded fw-bold fs-5 d-flex align-items-center">
+                        <i class="ti ti-clock me-1"></i>
+                        <span id="countdown">{formatTime(timeLeft)}</span>
+                    </div>
+                )}
 
-            <select class="form-select w-auto">
-                <option selected value="easy">
-                    Easy
-                </option>
-                <option value="medium">Medium</option>
-                <option value="hard">Hard</option>
-            </select>
-            <form onSubmit={handleSubmit}>
-                {status === 1 ? (
+                {/* If the current user is the one who locked the doubt, show the select box */}
+                {doubt.locked_by == user.id && (
+                    <>
+                        <select
+                            className="form-select w-auto"
+                            value={data.difficulty}
+                            onChange={(e) =>
+                                setData("difficulty", e.target.value)
+                            }
+                        >
+                            <option value="1">Easy</option>
+                            <option value="2">Medium</option>
+                            <option value="3">Hard</option>
+                        </select>
+                    </>
+                )}
+
+                {/* Show Lock button when status is 1 (Unsolved) */}
+                {status === 1 && (
                     <button
                         type="submit"
                         className="btn btn-primary d-inline-flex align-items-center"
@@ -89,7 +97,10 @@ function LockDoubt({ doubt_id, status, slug, locked_at }) {
                     >
                         <i className="ti ti-lock me-2" /> Lock
                     </button>
-                ) : status === 0 ? (
+                )}
+
+                {/* Show Unlock button when status is 0 (Locked) and the current user is the one who locked the doubt */}
+                {status === 0 && doubt.locked_by == user.id && (
                     <button
                         type="submit"
                         className="btn btn-warning d-inline-flex align-items-center"
@@ -97,9 +108,9 @@ function LockDoubt({ doubt_id, status, slug, locked_at }) {
                     >
                         <i className="ti ti-lock me-2" /> Unlock
                     </button>
-                ) : null}
-            </form>
-        </div>
+                )}
+            </div>
+        </form>
     );
 }
 

@@ -63,12 +63,16 @@ function SolveDetails({ auth, doubtDetails, env, flash, errors }) {
                                         Solution
                                     </h3>
                                 </div>
-                                <LockDoubt
-                                    doubt_id={doubtDetails.id}
-                                    status={doubtDetails.status}
-                                    slug={doubtDetails.slug}
-                                    locked_at={doubtDetails.locked_at}
-                                />
+                                {doubtDetails.status != 2 && (
+                                    <LockDoubt
+                                        doubt={doubtDetails}
+                                        doubt_id={doubtDetails.id}
+                                        status={doubtDetails.status}
+                                        slug={doubtDetails.slug}
+                                        locked_at={doubtDetails.locked_at}
+                                        user={auth.user}
+                                    />
+                                )}
                             </div>
                             <hr />
                             <div className="row">
