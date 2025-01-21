@@ -33,8 +33,24 @@ Route::controller(AuthController::class)->group(function() {
     // route for load login form
     Route::get("/auth/login","loadLoginForm")->name("auth.login");
     Route::get('/logout','logout')->name('auth.logout');
+
+    // route for load forgot passwordForm
+    Route::get("/auth/forgot-password","loadForgotPasswordForm")->name('auth.forgot.password');
+    // route for load registration form
+    Route::get("/auth/registration","loadRegistrationForm")->name("auth.registration.form");
+    
+
     #=== Post Routes ===#
+    // route for login
     Route::post("/auth/login","login")->name("execute.auth.login");
+    // route for registration
+    Route::post("/auth/registration","registration")->name("execute.auth.registration");
+    // route for check otp
+    Route::post("/verify/otp","verifyOtp")->name("verify.otp");
+    // route for set password
+    Route::post("/auth/set/password","setNewPassword")->name("auth.set.password");
+
+    
 });
 
 

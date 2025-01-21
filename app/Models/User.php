@@ -21,6 +21,16 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
+        'status',
+        'remember_token',
+        'mobile',
+        'otp',
+        'isVerified',
+        'institue',
+        'class',
+        'group',
+        'otp_expires_at'
     ];
 
     /**
