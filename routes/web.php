@@ -80,6 +80,8 @@ Route::middleware([AuthMiddleware::class])->group(function () {
             Route::get("/explore/doubts","laodExploreDoubt")->name("student.explore.doubt");
             // route for load doubt details page
             Route::get("/doubt/{slug?}","loadDoubtDetails")->name("student.doubt.details");
+            // route for load student profile
+            Route::get("/student/profile","loadStudentProfile")->name("student.profile");
         });
 
         #=== Routes for student insert controller ===#

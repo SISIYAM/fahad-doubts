@@ -59,4 +59,9 @@ class StudentController extends Controller
         return Inertia::render("student/SolveDetails",['doubtDetails' => $doubtDetails]);
 
     }
+
+    // method for load student profile
+    public function loadStudentProfile() {
+        return Inertia::render("student/Profile");
+    }
 }

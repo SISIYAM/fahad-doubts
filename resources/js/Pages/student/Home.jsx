@@ -1,10 +1,16 @@
 import React from "react";
 import Layout from "@/layouts/Layout";
 import RecentDoubtCard from "../../components/RecentDoubtCard";
+import { Link } from "@inertiajs/react";
+import { route } from "ziggy-js";
 function Home({ auth, doubts, env }) {
     // get logged in users info
     const name = auth?.user?.name;
     const email = auth?.user?.email;
+    const mobile = auth?.user?.mobile;
+    const institue = auth?.user?.institue;
+    const StudentClass = auth?.user?.class;
+    const group = auth?.user?.group;
     const assetsUrl = env.ASSETS_URL;
 
     // count solved and unsolved doubts
@@ -27,15 +33,19 @@ function Home({ auth, doubts, env }) {
                             </div>
                             <h3 className="mb-2 mt-3">{name}</h3>
                             <p>{email}</p>
+                            <p>{mobile}</p>
                             <h5 className="text-muted mb-2">
-                                Class 11 | Science
+                                {StudentClass} {group && `| ${group}`}
                             </h5>
                             {/* <h5 class="text-muted d-inline rounded" style="background-color: rgb(255, 198, 198); padding: 5px;">PCMB | HSC 26 Cycle 02</h5> */}
-                            <h5 className="text-muted">Southeast University</h5>
+                            <h5 className="text-muted">{institue}</h5>
                             {/* Edit Profile Button */}
-                            <button className="btn btn-outline-warning mt-2">
+                            <Link
+                                href={route("student.profile")}
+                                className="btn btn-outline-warning mt-2"
+                            >
                                 Edit Profile
-                            </button>
+                            </Link>
                             <hr className="my-3 border border-secondary-subtle" />
                         </div>
                     </div>
