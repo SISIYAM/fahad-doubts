@@ -17,7 +17,10 @@ function AdminNavLink() {
                     </Link>
                 </li>
                 <li className="pc-item">
-                    <Link href="" className="pc-link">
+                    <Link
+                        href={route("admin.manage.solver")}
+                        className="pc-link"
+                    >
                         <span className="pc-micon">
                             <svg className="pc-icon">
                                 <use xlinkHref="#custom-user" />
@@ -29,7 +32,10 @@ function AdminNavLink() {
                     </Link>
                 </li>
                 <li className="pc-item">
-                    <Link href="" className="pc-link">
+                    <Link
+                        href={route("admin.manage.moderator")}
+                        className="pc-link"
+                    >
                         <span className="pc-micon">
                             <svg className="pc-icon">
                                 <use xlinkHref="#custom-security-safe" />

@@ -5,6 +5,7 @@ use App\Http\Controllers\AdminInsertController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DoubtController;
+use App\Http\Controllers\ModeratorController;
 use App\Http\Controllers\SolverController;
 use App\Http\Controllers\SolverInsertController;
 use App\Http\Controllers\StudentController;
@@ -12,6 +13,7 @@ use App\Http\Controllers\StudentInsertController;
 use App\Http\Controllers\StudentUpdateController;
 use App\Http\Middleware\AuthMiddleware;
 use App\Http\Middleware\ValidateAdmin;
+use App\Http\Middleware\ValidateModerator;
 use App\Http\Middleware\ValidatePaidStudent;
 use App\Http\Middleware\ValidateSolver;
 use App\Http\Middleware\ValidateStudent;
@@ -146,7 +148,7 @@ Route::middleware([AuthMiddleware::class])->group(function () {
             // route for load manage solver page
             Route::get("/admin/manage/solvers","loadManageSolverPage")->name("admin.manage.solver");
             // route for manage moredators
-            Route::get("/admin/manage/moderators","loadManageModeratorPage")->name("admin.manage.solver");
+            Route::get("/admin/manage/moderators","loadManageModeratorPage")->name("admin.manage.moderator");
             // route for load admin profile
             Route::get("/admin/profile","loadAdminProfile")->name("admin.profile");
 
@@ -166,11 +168,23 @@ Route::middleware([AuthMiddleware::class])->group(function () {
     });
 
 
+    #=== Routes for moderator ===#
+    Route::middleware([ValidateModerator::class])->group(function () {
+        // routes for Moderator 
+        Route::controller(ModeratorController::class)->group(function() {
+            Route::get("/moderator/profile","loadModeratorProfile")->name("moderator.profile");
+        });
+    });
+
+
+
     #=== Routes for Doubts ===#
     Route::controller(DoubtController::class)->group(function() {
         // route for load doubts details
         
     });
+
+
 
     
 });

@@ -30,11 +30,13 @@ class AdminController extends Controller
     }
 
     // method for load manage solvers page
-    public function loadManageSolverPage() {}
+    public function loadManageSolverPage() {
+        return Inertia::render("admin/ManageSolver");
+    }
 
     // method for load manage moderators page
     public function loadManageModeratorPage() {
-        
+        return Inertia::render("admin/ManageModerator");
     }
 
     // method for load admin profile
