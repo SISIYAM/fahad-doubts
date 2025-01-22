@@ -17,6 +17,13 @@ function Navbar() {
     const email = auth?.user?.email;
     const role = auth?.user?.role;
 
+    const routes = {
+        solver: "solver.profile",
+        admin: "admin.profile",
+        moderator: "moderator.profile",
+    };
+    let profileRoute = routes[role] || "student.profile";
+
     // use ziggy routes
     const route = useRoute();
 
@@ -316,8 +323,8 @@ function Navbar() {
                                             </div>
                                             <hr className="border-secondary border-opacity-50" />
                                             <p className="text-span">Manage</p>
-                                            <a
-                                                href="#"
+                                            <Link
+                                                href={route(profileRoute)}
                                                 className="dropdown-item"
                                             >
                                                 <span>
@@ -327,29 +334,8 @@ function Navbar() {
           </svg> */}
                                                     <span>My Account</span>
                                                 </span>
-                                            </a>
-                                            <a
-                                                href="#"
-                                                className="dropdown-item"
-                                            >
-                                                <span>
-                                                    <svg className="pc-icon text-muted me-2">
-                                                        <use xlinkHref="#custom-setting-outline" />
-                                                    </svg>
-                                                    <span>Settings</span>
-                                                </span>
-                                            </a>
-                                            <a
-                                                href="#"
-                                                className="dropdown-item"
-                                            >
-                                                <span>
-                                                    <svg className="pc-icon text-muted me-2">
-                                                        <use xlinkHref="#custom-lock-outline" />
-                                                    </svg>
-                                                    <span>Change Password</span>
-                                                </span>
-                                            </a>
+                                            </Link>
+
                                             <hr className="border-secondary border-opacity-50" />
                                             <div className="d-grid mb-2 w-100">
                                                 <Link href="/logout">

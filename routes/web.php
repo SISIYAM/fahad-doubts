@@ -57,6 +57,9 @@ Route::controller(AuthController::class)->group(function() {
     // route for execute final registration for student
     Route::post("/execute/signup","signUp")->name("execute.final.signup");
 
+    // route for user password
+    Route::post("/execute/change/password","changePassword")->name("execute.change.password");
+
     
 });
 
@@ -116,8 +119,11 @@ Route::middleware([AuthMiddleware::class])->group(function () {
             // route for load post doubts page
             Route::get("/locked/doubt","loadLockedDoubt")->name("solver.locked.doubt");
             Route::get("/browse/doubt","loadBrowseDoubt")->name("solver.browse.doubt");
-             // route for load doubt details page
+            // route for load doubt details page
             Route::get("/solver/doubt/{slug?}","loadSolverDoubtDetails")->name("solver.doubt.details");
+            // route for load solver profile
+            Route::get("/solver/profile","loadSolverProfile")->name("solver.profile");
+
         });
 
         #=== Routes for solver insert controller
@@ -139,8 +145,11 @@ Route::middleware([AuthMiddleware::class])->group(function () {
             Route::get("/admin/manage/matrials","loadMaterialsPage")->name("admin.manage.matrials");
             // route for load manage solver page
             Route::get("/admin/manage/solvers","loadManageSolverPage")->name("admin.manage.solver");
+            // route for manage moredators
             Route::get("/admin/manage/moderators","loadManageModeratorPage")->name("admin.manage.solver");
-            
+            // route for load admin profile
+            Route::get("/admin/profile","loadAdminProfile")->name("admin.profile");
+
         });
 
 

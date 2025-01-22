@@ -54,4 +54,9 @@ class SolverController extends Controller
         return Inertia::render("solver/SolverDoubtDetails",['doubtDetails' => $doubtDetails]);
 
     }
+
+    // function for laod solver profile
+    public function loadSolverProfile() {
+        return Inertia::render("solver/Profile");
+    }
 }

@@ -205,4 +205,35 @@ class AuthController extends Controller
          
     }
 
+    // method for change user password
+    public function changePassword(Request $req) {
+        // Validate the input data
+        $validated = $req->validate([
+            'oldPassword' => 'required|string',
+            'newPassword' => 'required|string',
+        ]);
+        try {
+            
+    
+            // Get the currently authenticated user
+            $user = User::where('id',$req->user_id)->first();
+    
+            // Check if the old password matches the one in the database
+            if (!Hash::check($req->oldPassword, $user->password)) {
+
+                return to_route("student.profile")->with("error", "The provided old password is incorrect.");
+            }
+    
+            // update the password
+            $user->password = Hash::make($req->newPassword); 
+            $user->save(); 
+    
+            return to_route("student.profile")->with("success", "Password changed successfully.");
+            
+        } catch (\Exception $e) {
+            
+            return to_route("student.profile")->with("error", "An error occurred: " . $e->getMessage());
+        }
+    }
+
 }

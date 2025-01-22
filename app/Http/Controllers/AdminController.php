@@ -37,4 +37,9 @@ class AdminController extends Controller
         
     }
 
+    // method for load admin profile
+    public function loadAdminProfile() {
+        return Inertia::render("admin/Profile");
+    }
+
 }
