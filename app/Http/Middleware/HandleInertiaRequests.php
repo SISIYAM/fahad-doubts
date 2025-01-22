@@ -41,6 +41,11 @@ class HandleInertiaRequests extends Middleware
                 'warning' => fn () => $request->session()->get('warning'),
                 'error' => fn () => $request->session()->get('error'),
             ],
+            'props' => [
+                'user_id' => fn () => $request->session()->get('user_id'),
+                'message' => fn () => $request->session()->get('message'),
+                'error_message' => fn () => $request->session()->get('error_message'),
+            ],
             'auth.user' => fn () => $request->user()
                 ? $request->user()->only('id', 'name', 'email','role')
                 : null,

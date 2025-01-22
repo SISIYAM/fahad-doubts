@@ -2,10 +2,12 @@ import { useForm } from "@inertiajs/react";
 import React, { useEffect, useRef, useState } from "react";
 import { ToastContainer } from "react-toastify";
 
-function OtpPage({ message, flash, errors, user_id, error }) {
+function OtpPage({ props, flash, errors }) {
+    // destruct props
+    const { message, user_id, error_message } = props;
+
     const [otp, setOtp] = useState(["", "", "", ""]);
     const { data, setData, post, processing } = useForm({ otp: "", user_id });
-
     const otpForm = useRef(null);
 
     const handleChange = (value, index) => {
@@ -77,9 +79,9 @@ function OtpPage({ message, flash, errors, user_id, error }) {
                                         {message}
                                     </p>
                                 )}
-                                {error && (
+                                {error_message && (
                                     <p className="alert alert-danger">
-                                        {error}
+                                        {error_message}
                                     </p>
                                 )}
                             </div>

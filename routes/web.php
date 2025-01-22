@@ -38,7 +38,10 @@ Route::controller(AuthController::class)->group(function() {
     Route::get("/auth/forgot-password","loadForgotPasswordForm")->name('auth.forgot.password');
     // route for load registration form
     Route::get("/auth/registration","loadRegistrationForm")->name("auth.registration.form");
-    
+    // route for load verify otp form
+    Route::get("/verify/otp","loadVerifyOtpForm")->name("load.otp.form");
+    // route for load set password form
+    Route::get("/auth/set/password","loadSetPasswordForm")->name("load.set.password.form");
 
     #=== Post Routes ===#
     // route for login

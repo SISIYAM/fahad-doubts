@@ -1,6 +1,7 @@
 import React from "react";
 
-function setPassword({ message, user_id }) {
+function SetPassword({ props }) {
+    const { message, user_id, error_message } = props;
     return (
         <div className="auth-main">
             <div className="auth-wrapper v1">
@@ -18,6 +19,14 @@ function setPassword({ message, user_id }) {
                             <h4 className="text-center f-w-500 mb-4 mt-4">
                                 Set Your Account Password
                             </h4>
+                            {message && (
+                                <p className="alert alert-success">{message}</p>
+                            )}
+                            {error_message && (
+                                <p className="alert alert-danger">
+                                    {error_message}
+                                </p>
+                            )}
                             <div className="mb-3">
                                 <input
                                     type="password"
@@ -64,4 +73,4 @@ function setPassword({ message, user_id }) {
     );
 }
 
-export default setPassword;
+export default SetPassword;

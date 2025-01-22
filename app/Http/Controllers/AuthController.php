@@ -32,6 +32,16 @@ class AuthController extends Controller
         return Inertia::render("authentication/Registration");
     }
 
+    // function for load loadVerifyOtpForm
+    public function loadVerifyOtpForm() {
+        return Inertia::render("authentication/OtpPage");
+    }
+
+    // function for load loadSetPasswordForm
+    public function loadSetPasswordForm() {
+        return Inertia::render("authentication/SetPassword");
+    }
+
     // function for validate and register account
     public function registration(Request $req){
 
@@ -56,8 +66,10 @@ class AuthController extends Controller
 
         $user = User::create($validated);
         
-        return Inertia::render("authentication/OtpPage",['user_id' => $user->id,'message' => "We have sent a 4-digit OTP to your mobile number"." ".$validated['mobile']."."."Please enter the OTP below to verify your account and set your password."]);
-
+        return to_route('load.otp.form')->with([
+            'user_id' => $user->id,
+            'message' => "We have sent a 4-digit OTP to your mobile number " . $validated['mobile'] . ". Please enter the OTP below to verify your account and set your password."
+        ]);
         
        } catch (\Exception $e) {
         return to_route("auth.registration.form")->with('error', 'An error occurred while registration.');
@@ -119,11 +131,16 @@ class AuthController extends Controller
             $user = User::where('id',$req->user_id)->first();  
             // return $this->isOtpValid($user, $req->otp);
             if ($this->isOtpValid($user, $req->otp)) {
-                return Inertia::render("authentication/setPassword",['message' => 'Please set a new password for your account to complete the verification process.','user_id' => $user->id]);
+                return to_route("load.set.password.form")
+                ->with(['message' => 'Please set a new password for your account to complete the verification process.','user_id' => $user->id]);
+
             } else {
                 // If OTP is invalid or expired
-                return Inertia::render("authentication/OtpPage",['error' => "Invalid or expired OTP.",'user_id' => $user->id]);
-               
+                return to_route('load.otp.form')->with([
+                    'user_id' => $user->id,
+                    'error_message' => "Invalid or expired OTP"
+                ]);
+              
             }
     
         } catch (\Exception $e) {
