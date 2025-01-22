@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\TempUser;
-use App\Models\User;
 use Carbon\Carbon;
+use App\Models\User;
+use Inertia\Inertia;
+use App\Models\TempUser;
+use App\Models\StudentClass;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Inertia\Inertia;
 
 class AuthController extends Controller
 {
@@ -30,7 +31,8 @@ class AuthController extends Controller
         if(Auth::check()){
             return to_route("dashboard");
         }
-        return Inertia::render("authentication/Registration");
+        $classes = StudentClass::where('status','1')->get();
+        return Inertia::render("authentication/Registration",['classes' => $classes]);
     }
 
     // function for load loadVerifyOtpForm

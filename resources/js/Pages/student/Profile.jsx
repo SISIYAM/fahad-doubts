@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Layout from "@/layouts/Layout";
 import { useForm } from "@inertiajs/react";
+import { route } from "ziggy-js";
+import { toast, ToastContainer } from "react-toastify";
 
-function Profile({ auth }) {
+function Profile({ auth, classes, doubts, flash, errors }) {
+    const user_id = auth.user.id;
     const name = auth.user.name;
     const email = auth.user.email;
     const mobile = auth.user.mobile;
@@ -11,6 +14,7 @@ function Profile({ auth }) {
     const group = auth.user.group;
 
     const { data, setData, post, processing } = useForm({
+        user_id,
         name,
         email,
         mobile,
@@ -27,11 +31,39 @@ function Profile({ auth }) {
     // handle form submit
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(data);
+        post(route("student.update.profile"), data);
     };
+
+    // count solved and unsolved doubts
+    const solvedDoubts = doubts.filter((doubt) => doubt.status == "2").length;
+    // count unsolved doubts
+    const unsolvedDoubts = doubts.filter((doubt) => doubt.status == "1").length;
+
+    useEffect(() => {
+        // show success message
+        if (flash.success) {
+            toast.success(flash.success);
+            flash.success = null;
+        }
+
+        // Show error message
+        if (flash.error) {
+            toast.error(flash.error);
+            flash.error = null;
+        }
+
+        if (errors) {
+            Object.values(errors).forEach((error) => {
+                toast.error(error);
+            });
+            errors = null;
+        }
+    }, [flash, errors]);
 
     return (
         <>
+            <ToastContainer />
+
             {/* [ Main Content ] start */}
             <div className="row">
                 {/* [ sample-page ] start */}
@@ -92,7 +124,7 @@ function Profile({ auth }) {
                                                 <div className="chat-avtar d-inline-flex mx-auto">
                                                     <img
                                                         className="rounded-circle img-fluid wid-70"
-                                                        src="../assets/images/user/avatar-5.jpg"
+                                                        src="/assets/images/user/avatar-5.jpg"
                                                         alt="User image"
                                                     />
                                                 </div>
@@ -105,7 +137,7 @@ function Profile({ auth }) {
                                                 <div className="row g-3">
                                                     <div className="col-4">
                                                         <h5 className="mb-0">
-                                                            86
+                                                            {doubts.length}
                                                         </h5>
                                                         <small className="text-muted">
                                                             Post
@@ -113,7 +145,7 @@ function Profile({ auth }) {
                                                     </div>
                                                     <div className="col-4 border border-top-0 border-bottom-0">
                                                         <h5 className="mb-0">
-                                                            40
+                                                            {solvedDoubts}
                                                         </h5>
                                                         <small className="text-muted">
                                                             Solved
@@ -121,7 +153,7 @@ function Profile({ auth }) {
                                                     </div>
                                                     <div className="col-4">
                                                         <h5 className="mb-0">
-                                                            46
+                                                            {unsolvedDoubts}
                                                         </h5>
                                                         <small className="text-muted">
                                                             Unsolved
@@ -130,9 +162,11 @@ function Profile({ auth }) {
                                                 </div>
                                                 <hr className="my-3 border border-secondary-subtle" />
                                                 <div className="d-inline-flex align-items-center justify-content-start w-100 mb-3">
-                                                    <i className="ti ti-mail me-2" />
+                                                    <i className="ti ti-home me-2" />
                                                     <p className="mb-0">
-                                                        {institue}
+                                                        {institue
+                                                            ? institue
+                                                            : "None"}
                                                     </p>
                                                 </div>
                                                 <div className="d-inline-flex align-items-center justify-content-start w-100 mb-3">
@@ -156,140 +190,200 @@ function Profile({ auth }) {
                                         <div className="card-header">
                                             <h5>Personal Information</h5>
                                         </div>
-                                        <div className="card-body">
-                                            <div className="row">
-                                                <div className="col-sm-12 text-center mb-3">
-                                                    <div className="user-upload wid-75">
-                                                        <img
-                                                            src="../assets/images/user/avatar-4.jpg"
-                                                            alt="img"
-                                                            className="img-fluid"
-                                                        />
-                                                        <label
-                                                            htmlFor="uplfile"
-                                                            className="img-avtar-upload"
-                                                        >
-                                                            <i className="ti ti-camera f-24 mb-1" />
-                                                            <span>Upload</span>
-                                                        </label>
-                                                        <input
+                                        <form onSubmit={handleSubmit}>
+                                            <div className="card-body">
+                                                <div className="row">
+                                                    <div className="col-sm-12 text-center mb-3">
+                                                        <div className="user-upload wid-75">
+                                                            <img
+                                                                src="/assets/images/user/avatar-4.jpg"
+                                                                alt="img"
+                                                                className="img-fluid"
+                                                            />
+                                                            <label
+                                                                htmlFor="uplfile"
+                                                                className="img-avtar-upload"
+                                                            >
+                                                                <i className="ti ti-camera f-24 mb-1" />
+                                                                <span>
+                                                                    Upload
+                                                                </span>
+                                                            </label>
+                                                            {/* <input
                                                             type="file"
                                                             id="uplfile"
                                                             className="d-none"
-                                                        />
+                                                        /> */}
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div className="col-sm-12">
-                                                    <div className="mb-3">
-                                                        <label className="form-label">
-                                                            Full Name
-                                                        </label>
-                                                        <input
-                                                            type="text"
-                                                            className="form-control"
-                                                            name="name"
-                                                            value={data.name}
-                                                            onChange={(e) =>
-                                                                handleChange(e)
-                                                            }
-                                                        />
+                                                    <div className="col-sm-12">
+                                                        <div className="mb-3">
+                                                            <label className="form-label">
+                                                                Full Name
+                                                            </label>
+                                                            <input
+                                                                type="text"
+                                                                className="form-control"
+                                                                name="name"
+                                                                value={
+                                                                    data.name
+                                                                }
+                                                                onChange={(e) =>
+                                                                    handleChange(
+                                                                        e
+                                                                    )
+                                                                }
+                                                            />
+                                                        </div>
                                                     </div>
-                                                </div>
 
-                                                <div className="col-sm-4">
-                                                    <div className="mb-3">
-                                                        <label className="form-label">
-                                                            Class
-                                                        </label>
-                                                        <select className="form-control">
-                                                            <option>
-                                                                Class 9
-                                                            </option>
-                                                            <option>
-                                                                Class 10
-                                                            </option>
-                                                        </select>
+                                                    <div className="col-sm-4">
+                                                        <div className="mb-3">
+                                                            <label className="form-label">
+                                                                Class
+                                                            </label>
+                                                            <select
+                                                                name="studentClass"
+                                                                className="form-control"
+                                                                value={
+                                                                    data.studentClass
+                                                                }
+                                                                onChange={
+                                                                    handleChange
+                                                                }
+                                                            >
+                                                                {classes.map(
+                                                                    (
+                                                                        classItem
+                                                                    ) => (
+                                                                        <option
+                                                                            key={
+                                                                                classItem.id
+                                                                            }
+                                                                            value={
+                                                                                classItem.name
+                                                                            }
+                                                                            selected={
+                                                                                classItem.name ==
+                                                                                studentClass
+                                                                            }
+                                                                        >
+                                                                            {
+                                                                                classItem.name
+                                                                            }
+                                                                        </option>
+                                                                    )
+                                                                )}
+                                                            </select>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div className="col-sm-4">
-                                                    <div className="mb-3">
-                                                        <label className="form-label">
-                                                            Group
-                                                        </label>
-                                                        <select className="form-control">
-                                                            <option>
-                                                                None
-                                                            </option>
-                                                            <option>
-                                                                Science
-                                                            </option>
-                                                        </select>
+                                                    <div className="col-sm-4">
+                                                        <div className="mb-3">
+                                                            <label className="form-label">
+                                                                Group
+                                                            </label>
+                                                            <select
+                                                                name="group"
+                                                                className="form-control"
+                                                                value={
+                                                                    data.group
+                                                                }
+                                                                onChange={
+                                                                    handleChange
+                                                                }
+                                                            >
+                                                                <option value="none">
+                                                                    None
+                                                                </option>
+                                                                <option value="science">
+                                                                    Science
+                                                                </option>
+                                                                <option value="commerce">
+                                                                    Commerce
+                                                                </option>
+                                                                <option value="arts">
+                                                                    Arts
+                                                                </option>
+                                                            </select>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div className="col-sm-4">
-                                                    <div className="mb-3">
-                                                        <label className="form-label">
-                                                            Phone Number
-                                                        </label>
-                                                        <input
-                                                            type="tel"
-                                                            className="form-control"
-                                                            name="mobile"
-                                                            value={data.mobile}
-                                                            onChange={(e) =>
-                                                                handleChange(e)
-                                                            }
-                                                        />
+                                                    <div className="col-sm-4">
+                                                        <div className="mb-3">
+                                                            <label className="form-label">
+                                                                Phone Number
+                                                            </label>
+                                                            <input
+                                                                type="tel"
+                                                                className="form-control"
+                                                                name="mobile"
+                                                                value={
+                                                                    data.mobile
+                                                                }
+                                                                onChange={(e) =>
+                                                                    handleChange(
+                                                                        e
+                                                                    )
+                                                                }
+                                                            />
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div className="col-sm-6">
-                                                    <div className="mb-3">
-                                                        <label className="form-label">
-                                                            Email
-                                                        </label>
-                                                        <input
-                                                            type="email"
-                                                            className="form-control"
-                                                            name="email"
-                                                            value={data.email}
-                                                            onChange={(e) =>
-                                                                handleChange(e)
-                                                            }
-                                                        />
+                                                    <div className="col-sm-6">
+                                                        <div className="mb-3">
+                                                            <label className="form-label">
+                                                                Email
+                                                            </label>
+                                                            <input
+                                                                type="email"
+                                                                className="form-control"
+                                                                name="email"
+                                                                value={
+                                                                    data.email
+                                                                }
+                                                                onChange={(e) =>
+                                                                    handleChange(
+                                                                        e
+                                                                    )
+                                                                }
+                                                            />
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div className="col-sm-6">
-                                                    <div className="mb-3">
-                                                        <label className="form-label">
-                                                            College
-                                                        </label>
-                                                        <input
-                                                            type="text"
-                                                            className="form-control"
-                                                            name="institue"
-                                                            value={
-                                                                data.institue
-                                                            }
-                                                            onChange={(e) =>
-                                                                handleChange(e)
-                                                            }
-                                                        />
+                                                    <div className="col-sm-6">
+                                                        <div className="mb-3">
+                                                            <label className="form-label">
+                                                                College
+                                                            </label>
+                                                            <input
+                                                                type="text"
+                                                                className="form-control"
+                                                                name="institue"
+                                                                value={
+                                                                    data.institue
+                                                                }
+                                                                onChange={(e) =>
+                                                                    handleChange(
+                                                                        e
+                                                                    )
+                                                                }
+                                                            />
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div className="card-footer text-end btn-page">
-                                            <div className="btn btn-outline-secondary">
-                                                Cancel
+                                            <div className="card-footer text-end btn-page">
+                                                <div className="btn btn-outline-secondary">
+                                                    Cancel
+                                                </div>
+                                                <button
+                                                    type="submit"
+                                                    className="btn btn-primary"
+                                                    disabled={processing}
+                                                >
+                                                    {processing
+                                                        ? "Processing"
+                                                        : "Update Profile"}
+                                                </button>
                                             </div>
-                                            <button
-                                                type="button"
-                                                className="btn btn-primary"
-                                                onClick={handleSubmit}
-                                            >
-                                                Update Profile
-                                            </button>
-                                        </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>

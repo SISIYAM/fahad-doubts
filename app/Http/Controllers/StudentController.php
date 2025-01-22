@@ -62,6 +62,17 @@ class StudentController extends Controller
 
     // method for load student profile
     public function loadStudentProfile() {
-        return Inertia::render("student/Profile");
+       
+        try { 
+                 
+            $doubts = Doubt::where('user_id',$this->loggedInUserId)->with('student','class','subject','chapter')->get();
+            // find classes
+            $classes = StudentClass::where('status','1')->get();
+            return Inertia::render("student/Profile",['doubts' =>$doubts,'classes' => $classes]);
+
+        } catch (\Throwable $th) {
+            return $th;
+        }
+       
     }
 }

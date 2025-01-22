@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import { route } from "ziggy-js";
 
-function Registration({ flash, errors }) {
+function Registration({ flash, errors, classes }) {
     const { data, setData, post, processing, reset } = useForm({
         name: "",
         email: "",
@@ -117,14 +117,31 @@ function Registration({ flash, errors }) {
                                     />
                                 </div>
                                 <div className="mb-3">
-                                    <input
-                                        type="text"
+                                    <select
                                         name="class"
-                                        value={data.class}
-                                        onChange={handleChange}
-                                        className="form-control"
-                                        placeholder="Your Class"
-                                    />
+                                        className="form-select"
+                                        id="classSelect"
+                                        onChange={(e) => handleChange(e)}
+                                        required
+                                    >
+                                        <option value={""}>
+                                            Select your class
+                                        </option>
+                                        {classes.length > 0 ? (
+                                            classes.map((classItem) => (
+                                                <option
+                                                    key={classItem.id}
+                                                    value={classItem.name}
+                                                >
+                                                    {classItem.name}
+                                                </option>
+                                            ))
+                                        ) : (
+                                            <option disabled>
+                                                No classes available
+                                            </option>
+                                        )}
+                                    </select>
                                 </div>
                                 <div className="d-grid mt-4">
                                     <button

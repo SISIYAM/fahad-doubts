@@ -9,6 +9,7 @@ use App\Http\Controllers\SolverController;
 use App\Http\Controllers\SolverInsertController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\StudentInsertController;
+use App\Http\Controllers\StudentUpdateController;
 use App\Http\Middleware\AuthMiddleware;
 use App\Http\Middleware\ValidateAdmin;
 use App\Http\Middleware\ValidatePaidStudent;
@@ -99,6 +100,13 @@ Route::middleware([AuthMiddleware::class])->group(function () {
                 Route::post("/execute/student/report","submitStudentReport")->name("execute.student.report");
             });
        });
+
+      // routes for student update controller\
+      Route::controller(StudentUpdateController::class)->group(function () {
+         // route for update profile
+         Route::post("/execute/update/profile","updateProfile")->name("student.update.profile");
+      });
+       
     });
 
     #=== Middle ware for validate solver only ===#
