@@ -90,25 +90,74 @@ function Home({ auth, doubts, env }) {
                                 <h5>Recent Doubts</h5>
                             </div>
                             <div className="card-body">
-                                <div className="row">
-                                    {doubts.length > 0
-                                        ? doubts.map((doubt) => (
-                                              <RecentDoubtCard
-                                                  className={doubt?.class?.name}
-                                                  subject={doubt?.subject?.name}
-                                                  chapter={doubt?.chapter?.name}
-                                                  status={doubt?.status}
-                                                  text={doubt?.text}
-                                                  image={doubt?.image}
-                                                  audio={doubt?.audio}
-                                                  created_at={doubt?.created_at}
-                                                  student={doubt?.student?.name}
-                                                  assetsUrl={assetsUrl}
-                                                  slug={doubt?.slug}
-                                              />
-                                          ))
-                                        : ""}
-                                </div>
+                                {auth?.user?.isVerified == 1 ? (
+                                    <div className="row">
+                                        {doubts.length > 0
+                                            ? doubts.map((doubt) => (
+                                                  <RecentDoubtCard
+                                                      className={
+                                                          doubt?.class?.name
+                                                      }
+                                                      subject={
+                                                          doubt?.subject?.name
+                                                      }
+                                                      chapter={
+                                                          doubt?.chapter?.name
+                                                      }
+                                                      status={doubt?.status}
+                                                      text={doubt?.text}
+                                                      image={doubt?.image}
+                                                      audio={doubt?.audio}
+                                                      created_at={
+                                                          doubt?.created_at
+                                                      }
+                                                      student={
+                                                          doubt?.student?.name
+                                                      }
+                                                      assetsUrl={assetsUrl}
+                                                      slug={doubt?.slug}
+                                                  />
+                                              ))
+                                            : ""}
+                                    </div>
+                                ) : (
+                                    <div
+                                        style={{
+                                            display: "flex",
+                                            alignItems: "center",
+                                            justifyContent: "center",
+                                            backgroundColor: "#ffe0e0",
+                                            border: "1px solid #ff4d4f",
+                                            borderRadius: "8px",
+                                            padding: "16px",
+                                            boxShadow:
+                                                "0px 4px 8px rgba(0, 0, 0, 0.1)",
+                                            color: "#ff4d4f",
+                                            fontFamily:
+                                                "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                                        }}
+                                    >
+                                        <div>
+                                            <h3
+                                                style={{
+                                                    margin: "0 0 8px 0",
+                                                    fontWeight: "600",
+                                                }}
+                                            >
+                                                You're Locked!
+                                            </h3>
+                                            <p style={{ margin: 0 }}>
+                                                You are unable to post doubts at
+                                                the moment. <br />
+                                                <strong>
+                                                    Please purchase a
+                                                    subscription to unlock this
+                                                    feature.
+                                                </strong>
+                                            </p>
+                                        </div>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </div>

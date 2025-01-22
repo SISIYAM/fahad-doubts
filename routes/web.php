@@ -11,6 +11,7 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\StudentInsertController;
 use App\Http\Middleware\AuthMiddleware;
 use App\Http\Middleware\ValidateAdmin;
+use App\Http\Middleware\ValidatePaidStudent;
 use App\Http\Middleware\ValidateSolver;
 use App\Http\Middleware\ValidateStudent;
 use Illuminate\Support\Facades\Route;
@@ -84,17 +85,20 @@ Route::middleware([AuthMiddleware::class])->group(function () {
             Route::get("/student/profile","loadStudentProfile")->name("student.profile");
         });
 
-        #=== Routes for student insert controller ===#
-        Route::controller(StudentInsertController::class)->group(function() {
-            // for insert doubts
-            Route::post("/execute/add/doubt","insertDoubt")->name("execute.add.doubt");
-            // route for insert student comment
-            Route::post("/execute/student/add/comment","insertComment")->name("execute.student.add.comment");
-            // route for handle student satisfaction
-            Route::post("/execute/student/satisfiction","submitStudentSatisfaction")->name("execute.student.satisfaction");
-            // route for submit report
-            Route::post("/execute/student/report","submitStudentReport")->name("execute.student.report");
-        });
+        // middleware for validate paid students
+       Route::middleware([ValidatePaidStudent::class])->group(function () {
+            #=== Routes for student insert controller ===#
+            Route::controller(StudentInsertController::class)->group(function() {
+                // for insert doubts
+                Route::post("/execute/add/doubt","insertDoubt")->name("execute.add.doubt");
+                // route for insert student comment
+                Route::post("/execute/student/add/comment","insertComment")->name("execute.student.add.comment");
+                // route for handle student satisfaction
+                Route::post("/execute/student/satisfiction","submitStudentSatisfaction")->name("execute.student.satisfaction");
+                // route for submit report
+                Route::post("/execute/student/report","submitStudentReport")->name("execute.student.report");
+            });
+       });
     });
 
     #=== Middle ware for validate solver only ===#

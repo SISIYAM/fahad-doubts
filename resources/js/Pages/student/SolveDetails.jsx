@@ -82,58 +82,100 @@ function SolveDetails({ auth, doubtDetails, env, flash, errors }) {
                             </div>
 
                             <hr />
-                            <div className="row">
-                                {doubtDetails.status == 2 ? (
-                                    <>
-                                        <div>
-                                            <div className="p-4 d-flex flex-column align-items-center gap-4">
-                                                <p className="text-black">
-                                                    {doubtDetails?.solve?.text}
-                                                </p>
-                                                {doubtDetails?.solve?.image && (
-                                                    <img
-                                                        src={`${assetsUrl}/${doubtDetails?.solve?.image}`}
-                                                        alt={
+                            {auth?.user?.isVerified == 1 ? (
+                                <div className="row">
+                                    {doubtDetails.status == 2 ? (
+                                        <>
+                                            <div>
+                                                <div className="p-4 d-flex flex-column align-items-center gap-4">
+                                                    <p className="text-black">
+                                                        {
                                                             doubtDetails?.solve
-                                                                ?.id
+                                                                ?.text
                                                         }
-                                                        className="img-fluid mb-1"
-                                                    />
+                                                    </p>
+                                                    {doubtDetails?.solve
+                                                        ?.image && (
+                                                        <img
+                                                            src={`${assetsUrl}/${doubtDetails?.solve?.image}`}
+                                                            alt={
+                                                                doubtDetails
+                                                                    ?.solve?.id
+                                                            }
+                                                            className="img-fluid mb-1"
+                                                        />
+                                                    )}
+                                                </div>
+                                                {doubtDetails?.solve?.audio && (
+                                                    <div className="audio-wrapper d-inline-block me-2 mb-2">
+                                                        <audio
+                                                            src={`${assetsUrl}/${doubtDetails?.solve?.audio}`}
+                                                            controls
+                                                            className="d-block"
+                                                        />
+                                                    </div>
                                                 )}
                                             </div>
-                                            {doubtDetails?.solve?.audio && (
-                                                <div className="audio-wrapper d-inline-block me-2 mb-2">
-                                                    <audio
-                                                        src={`${assetsUrl}/${doubtDetails?.solve?.audio}`}
-                                                        controls
-                                                        className="d-block"
-                                                    />
+                                            <div className="d-flex justify-content-between align-items-center">
+                                                <div className="d-flex flex-wrap align-items-center">
+                                                    <b className="mb-0 me-3 text-dark ">
+                                                        Solved
+                                                    </b>
                                                 </div>
-                                            )}
-                                        </div>
-                                        <div className="d-flex justify-content-between align-items-center">
-                                            <div className="d-flex flex-wrap align-items-center">
-                                                <b className="mb-0 me-3 text-dark ">
-                                                    Solved
-                                                </b>
+                                                <div className="d-flex align-items-center gap-2">
+                                                    <i className="ti ti-clock text-black" />
+                                                    <p className="text-black mb-0">
+                                                        {timeAgo(
+                                                            doubtDetails?.solve
+                                                                ?.created_at
+                                                        )}
+                                                    </p>
+                                                </div>
                                             </div>
-                                            <div className="d-flex align-items-center gap-2">
-                                                <i className="ti ti-clock text-black" />
-                                                <p className="text-black mb-0">
-                                                    {timeAgo(
-                                                        doubtDetails?.solve
-                                                            ?.created_at
-                                                    )}
-                                                </p>
-                                            </div>
+                                        </>
+                                    ) : (
+                                        <div className="alert alert-danger">
+                                            No solution added yet!
                                         </div>
-                                    </>
-                                ) : (
-                                    <div className="alert alert-danger">
-                                        No solution added yet!
+                                    )}
+                                </div>
+                            ) : (
+                                <div
+                                    style={{
+                                        display: "flex",
+                                        alignItems: "center",
+                                        justifyContent: "center",
+                                        backgroundColor: "#ffe0e0",
+                                        border: "1px solid #ff4d4f",
+                                        borderRadius: "8px",
+                                        padding: "16px",
+                                        boxShadow:
+                                            "0px 4px 8px rgba(0, 0, 0, 0.1)",
+                                        color: "#ff4d4f",
+                                        fontFamily:
+                                            "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                                    }}
+                                >
+                                    <div>
+                                        <h3
+                                            style={{
+                                                margin: "0 0 8px 0",
+                                                fontWeight: "600",
+                                            }}
+                                        >
+                                            You're Locked!
+                                        </h3>
+                                        <p style={{ margin: 0 }}>
+                                            You are unable to post doubts at the
+                                            moment. <br />
+                                            <strong>
+                                                Please purchase a subscription
+                                                to unlock this feature.
+                                            </strong>
+                                        </p>
                                     </div>
-                                )}
-                            </div>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
