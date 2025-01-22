@@ -1,5 +1,5 @@
 import { Link, router } from "@inertiajs/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import { useRoute } from "ziggy-js";
 
@@ -23,24 +23,26 @@ const Login = ({ flash, errors }) => {
         router.post(route("execute.auth.login"), values);
     }
 
-    // show success message
-    if (flash.success) {
-        toast.success(flash.success);
-        flash.success = null;
-    }
+    useEffect(() => {
+        // show success message
+        if (flash.success) {
+            toast.success(flash.success);
+            flash.success = null;
+        }
 
-    // Show error message
-    if (flash.error) {
-        toast.error(flash.error);
-        flash.error = null;
-    }
+        // Show error message
+        if (flash.error) {
+            toast.error(flash.error);
+            flash.error = null;
+        }
 
-    if (errors) {
-        Object.values(errors).forEach((error) => {
-            toast.error(error);
-        });
-        errors = null;
-    }
+        if (errors) {
+            Object.values(errors).forEach((error) => {
+                toast.error(error);
+            });
+            errors = null;
+        }
+    }, [flash, errors]);
 
     return (
         <div className="auth-main">

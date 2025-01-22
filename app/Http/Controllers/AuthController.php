@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\TempUser;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -48,8 +49,8 @@ class AuthController extends Controller
         // validate form input
         $validated = $req->validate([
             'name' => 'string|required|min:2',
-            'email' => 'string|email|required|unique:users',
-            'mobile' => 'string|numeric|unique:users',
+            'email' => 'string|email|required',
+            'mobile' => 'string|numeric',
             'institue' => 'string',
             'class' => 'string',
         ]);
@@ -61,10 +62,9 @@ class AuthController extends Controller
         $otp_expires_at = Carbon::now()->addMinutes(5);
 
         $validated['otp'] = $otp;
-        $validated['password'] = uniqid();
         $validated['otp_expires_at'] = $otp_expires_at;
 
-        $user = User::create($validated);
+        $user = TempUser::create($validated);
         
         return to_route('load.otp.form')->with([
             'user_id' => $user->id,
@@ -72,6 +72,7 @@ class AuthController extends Controller
         ]);
         
        } catch (\Exception $e) {
+        return $e;
         return to_route("auth.registration.form")->with('error', 'An error occurred while registration.');
        }
     }
@@ -125,10 +126,11 @@ class AuthController extends Controller
         $req->validate([
             'otp' => 'string|required|numeric',
         ]);
-
+        
         try {
             
-            $user = User::where('id',$req->user_id)->first();  
+            $user = TempUser::where('id',$req->user_id)->first();  
+           
             // return $this->isOtpValid($user, $req->otp);
             if ($this->isOtpValid($user, $req->otp)) {
                 return to_route("load.set.password.form")
@@ -144,8 +146,61 @@ class AuthController extends Controller
             }
     
         } catch (\Exception $e) {
+            return $e;
             return to_route("auth.registration.form")->with('error', 'An error occurred while verify otp.');
-           }
+        }
+    }
+
+
+    // method for final signup of a student
+    public function signUp(Request $req) {
+        $validated = $req->validate([
+            'password' => 'required|string|min:4',
+            'confirm_password' => 'required|string|min:4', 
+        ]);
+        
+        if($req->user_id == "timeout"){
+            return to_route("auth.registration.form")->with('error', 'Session Expired! Try again');
+        }
+
+        try {
+            // fetch the temp user
+            $temp_user = TempUser::where('id',$req->user_id)->first(); 
+            
+             // check if email or mobile already exists in User table
+            $existing_user = User::where('email', $temp_user->email)
+            ->orWhere('mobile', $temp_user->mobile)
+            ->first();
+
+            if ($existing_user) {
+                return to_route("auth.login")->with('error', 'An account with this email or mobile already exists. Please log in.');
+            }
+
+            $userDetails = [
+                "name" => $temp_user->name,
+                "email" => $temp_user->email ,
+                "password" => $validated['password'] ,
+                "mobile" => $temp_user->mobile ,
+                "institue" => $temp_user->institue ,
+                "class" => $temp_user->class ,
+            ];
+
+            $user = User::create($userDetails);
+
+            // Log in the user
+            Auth::login($user);
+
+            // delete temporary user
+            $temp_user->delete();
+
+            // Redirect to dashboard
+            return to_route("dashboard");
+    
+        } catch (\Exception $e) {
+            return $e;
+            return to_route("load.set.password.form")->with('error', 'An error occurred while signup.');
+        }
+         
     }
 
 }

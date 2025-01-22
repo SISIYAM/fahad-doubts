@@ -1,13 +1,33 @@
 import { useForm } from "@inertiajs/react";
 import React, { useEffect, useRef, useState } from "react";
-import { ToastContainer } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
+import Cookies from "js-cookie";
 
 function OtpPage({ props, flash, errors }) {
     // destruct props
-    const { message, user_id, error_message } = props;
+    const { message, error_message } = props;
+
+    // save user_id into cookie
+    useEffect(() => {
+        const userId = props?.user_id;
+        if (userId) {
+            // save user_id in a cookie for 5 minutes
+            Cookies.set("user_id", userId, { expires: 1 / 288 });
+        }
+    }, [props.session]);
+
+    // Retrieve user_id from the cookie
+    let user_id = Cookies.get("user_id");
+
+    if (!user_id) {
+        user_id = "timeout";
+    }
 
     const [otp, setOtp] = useState(["", "", "", ""]);
-    const { data, setData, post, processing } = useForm({ otp: "", user_id });
+    const { data, setData, post, processing } = useForm({
+        otp: "",
+        user_id: "",
+    });
     const otpForm = useRef(null);
 
     const handleChange = (value, index) => {
@@ -29,6 +49,7 @@ function OtpPage({ props, flash, errors }) {
     const handleSubmit = (e) => {
         e.preventDefault();
         const otpCode = otp.join("");
+        data.user_id = user_id;
         data.otp = otpCode;
         post(route("verify.otp"), data);
     };

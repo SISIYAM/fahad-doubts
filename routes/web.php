@@ -52,6 +52,8 @@ Route::controller(AuthController::class)->group(function() {
     Route::post("/verify/otp","verifyOtp")->name("verify.otp");
     // route for set password
     Route::post("/auth/set/password","setNewPassword")->name("auth.set.password");
+    // route for execute final registration for student
+    Route::post("/execute/signup","signUp")->name("execute.final.signup");
 
     
 });
