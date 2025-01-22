@@ -29,4 +29,12 @@ class AdminController extends Controller
         return Inertia::render("admin/ManageMaterial",["classes" => $classes,"subjects" => $subjects,"chapters" => $chapters]);
     }
 
+    // method for load manage solvers page
+    public function loadManageSolverPage() {}
+
+    // method for load manage moderators page
+    public function loadManageModeratorPage() {
+        
+    }
+
 }

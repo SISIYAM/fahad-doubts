@@ -129,7 +129,9 @@ Route::middleware([AuthMiddleware::class])->group(function () {
         Route::controller(AdminController::class)->group(function() {  
             // route for load add class form
             Route::get("/admin/manage/matrials","loadMaterialsPage")->name("admin.manage.matrials");
-            
+            // route for load manage solver page
+            Route::get("/admin/manage/solvers","loadManageSolverPage")->name("admin.manage.solver");
+            Route::get("/admin/manage/moderators","loadManageModeratorPage")->name("admin.manage.solver");
             
         });
 

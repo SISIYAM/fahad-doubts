@@ -2,6 +2,7 @@ import { useForm } from "@inertiajs/react";
 import React, { useEffect, useRef, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import Cookies from "js-cookie";
+import { route } from "ziggy-js";
 
 function OtpPage({ props, flash, errors }) {
     // destruct props
