@@ -7,22 +7,24 @@ import SubjectTab from "./components/SubjectTab";
 import ChapterTab from "./components/ChapterTab";
 
 function ManageMaterial({ flash, errors, classes, subjects, chapters }) {
-    // Show success message
-    if (flash.success) {
-        toast.success(flash.success);
-    }
+    useEffect(() => {
+        // Show success message
+        if (flash.success) {
+            toast.success(flash.success);
+        }
 
-    // Show error message
-    if (flash.error) {
-        toast.error(flash.error);
-    }
+        // Show error message
+        if (flash.error) {
+            toast.error(flash.error);
+        }
 
-    // Show validation errors
-    if (errors) {
-        Object.values(errors).forEach((error) => {
-            toast.error(error);
-        });
-    }
+        // Show validation errors
+        if (errors) {
+            Object.values(errors).forEach((error) => {
+                toast.error(error);
+            });
+        }
+    }, [flash, errors]);
     return (
         <>
             <ToastContainer />

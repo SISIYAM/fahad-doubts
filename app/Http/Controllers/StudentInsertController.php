@@ -79,17 +79,17 @@ class StudentInsertController extends Controller
     // function for insert student comment
     public function insertComment(Request $req) {
 
+        // doubt slug
+        $slug = $req->doubt_slug;
+
+        $validatedData = $req->validate([
+            'doubt_id' => 'required|integer',
+            'text' => 'string|nullable|max:5000',
+            'image' => 'nullable|file|image|max:2048', 
+            'audio' => 'nullable|file|max:5120', 
+        ]);
         try {
-            $validatedData = $req->validate([
-                'doubt_id' => 'required|integer',
-                'text' => 'required|string|max:5000',
-                'image' => 'nullable|file|image|max:2048', 
-                'audio' => 'nullable|file|max:5120', 
-            ]);
             
-            // generate unique slug for doubt
-            $slug = $req->doubt_slug;
-    
             // handle audio upload      
             $audioPath = NULL;
             if ($req->hasFile('audio')) {

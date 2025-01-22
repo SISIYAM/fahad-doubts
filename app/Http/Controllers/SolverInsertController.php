@@ -78,17 +78,18 @@ class SolverInsertController extends Controller
     // function for insert solver comment
     public function insertComment(Request $req) {
 
-        try {
-            $validatedData = $req->validate([
-                'doubt_id' => 'required|integer',
-                'text' => 'required|string|max:5000',
-                'image' => 'nullable|file|image|max:2048', 
-                'audio' => 'nullable|file|max:5120', 
-            ]);
-            
-            // generate unique slug for doubt
-            $slug = $req->doubt_slug;
-    
+        $validatedData = $req->validate([
+            'doubt_id' => 'required|integer',
+            'text' => 'nullable|string|max:5000',
+            'image' => 'nullable|file|image|max:2048', 
+            'audio' => 'nullable|file|max:5120', 
+        ]);
+        
+        // doubt slug
+        $slug = $req->doubt_slug;
+
+
+        try {     
             // handle audio upload      
             $audioPath = NULL;
             if ($req->hasFile('audio')) {

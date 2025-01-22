@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Layout from "@/layouts/Layout";
 import DoubtCard from "@/components/DoubtCard";
 import { timeAgo } from "@/helper/Helper";
@@ -12,25 +12,27 @@ import ReportBtn from "@/components/student/ReportBtn";
 function SolveDetails({ auth, doubtDetails, env, flash, errors }) {
     const assetsUrl = env.ASSETS_URL;
 
-    // show success message
-    if (flash.success) {
-        toast.success(flash.success);
+    useEffect(() => {
+        // show success message
+        if (flash.success) {
+            toast.success(flash.success);
 
-        flash.success = null;
-    }
+            flash.success = null;
+        }
 
-    // Show error message
-    if (flash.error) {
-        toast.error(flash.error);
-        flash.error = null;
-    }
+        // Show error message
+        if (flash.error) {
+            toast.error(flash.error);
+            flash.error = null;
+        }
 
-    if (errors) {
-        Object.values(errors).forEach((error) => {
-            toast.error(error);
-        });
-        errors = null;
-    }
+        if (errors) {
+            Object.values(errors).forEach((error) => {
+                toast.error(error);
+            });
+            errors = null;
+        }
+    }, [flash, errors]);
 
     return (
         <>

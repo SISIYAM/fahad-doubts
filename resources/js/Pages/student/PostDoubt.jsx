@@ -219,25 +219,27 @@ function PostDoubt({
         setAudio(null);
     };
 
-    // show success message
-    if (flash.success) {
-        toast.success(flash.success);
-        resetInputs();
-        flash.success = null;
-    }
+    useEffect(() => {
+        // show success message
+        if (flash.success) {
+            toast.success(flash.success);
+            resetInputs();
+            flash.success = null;
+        }
 
-    // Show error message
-    if (flash.error) {
-        toast.error(flash.error);
-        flash.error = null;
-    }
+        // Show error message
+        if (flash.error) {
+            toast.error(flash.error);
+            flash.error = null;
+        }
 
-    if (errors) {
-        Object.values(errors).forEach((error) => {
-            toast.error(error);
-        });
-        errors = null;
-    }
+        if (errors) {
+            Object.values(errors).forEach((error) => {
+                toast.error(error);
+            });
+            errors = null;
+        }
+    }, [flash, errors]);
 
     return (
         <>
