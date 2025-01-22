@@ -24,6 +24,7 @@
         "datatables.net-responsive-dt": "^3.0.3",
         "js-cookie": "^3.0.5",
         "mic-recorder-to-mp3": "^2.2.2",
+        "prop-types": "^15.8.1",
         "react": "^19.0.0",
         "react-dom": "^19.0.0",
         "react-toastify": "^11.0.3",

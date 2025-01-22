@@ -4,7 +4,7 @@ import RecentDoubtCard from "../../components/RecentDoubtCard";
 import { Link } from "@inertiajs/react";
 import { route } from "ziggy-js";
 import PaidUserMessage from "../../components/PaidUserMessage";
-function Home({ auth, doubts, env }) {
+function Home({ auth, doubts, recentDoubts, env }) {
     // get logged in users info
     const name = auth?.user?.name;
     const email = auth?.user?.email;
@@ -93,8 +93,8 @@ function Home({ auth, doubts, env }) {
                             <div className="card-body">
                                 {auth?.user?.isVerified == 1 ? (
                                     <div className="row">
-                                        {doubts.length > 0
-                                            ? doubts.map((doubt) => (
+                                        {recentDoubts.length > 0
+                                            ? recentDoubts.map((doubt) => (
                                                   <RecentDoubtCard
                                                       className={
                                                           doubt?.class?.name
