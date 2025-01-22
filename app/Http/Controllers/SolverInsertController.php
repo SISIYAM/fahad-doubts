@@ -21,16 +21,20 @@ class SolverInsertController extends Controller
     // function for insert student comment
     public function submitSolution(Request $req) {
         
+        $validatedData = $req->validate([
+            'doubt_id' => 'required|integer',
+            'text' => 'required|string|max:5000',
+            'image' => 'nullable|file|image|max:2048', 
+            'audio' => 'nullable|file|max:5120',
+            'difficulty' => 'string|required', 
+        ]);
+        
+        // slug for doubt
+        $slug = $req->doubt_slug;
+
+        
         try {
-            $validatedData = $req->validate([
-                'doubt_id' => 'required|integer',
-                'text' => 'required|string|max:5000',
-                'image' => 'nullable|file|image|max:2048', 
-                'audio' => 'nullable|file|max:5120', 
-            ]);
             
-            // slug for doubt
-            $slug = $req->doubt_slug;
     
             // handle audio upload      
             $audioPath = NULL;
@@ -131,16 +135,18 @@ class SolverInsertController extends Controller
         $slug = $req->slug;
         try {
             
-            // Check if the solver has already locked any question
-            $existingLockedDoubt = Doubt::where('status', 0)
-            ->where('locked_by', $this->loggedInUserId)
-            ->get();
-
-            if ($existingLockedDoubt->count() > 0) {
-            return to_route("solver.doubt.details", $slug)
-                ->with('warning', 'You have already locked a question. Please unlock or solve the current question before locking a new one.');
-            }
-
+            // Check if the solver want to lock any question
+            if($req->status == 0){
+                // Check if the solver has already locked any question
+                $existingLockedDoubt = Doubt::where('status', 0)
+                ->where('locked_by', $this->loggedInUserId)
+                ->get();
+                
+                if ($existingLockedDoubt->count() > 0) {
+                return to_route("solver.doubt.details", $slug)
+                    ->with('warning', 'You have already locked a question. Please unlock or solve the current question before locking a new one.');
+                }
+           }
            
             $updateData = [
                 'status' => $req->status,
@@ -163,6 +169,7 @@ class SolverInsertController extends Controller
     
             return to_route("solver.doubt.details", $slug)->with('success', $message);
         } catch (\Exception $e) {
+            return $e;
             return to_route("solver.doubt.details", $slug)->with('error', 'An error occurred while updating the doubt status.');
         }
     }

@@ -7,7 +7,6 @@ function LockDoubt({ doubt, doubt_id, status, slug, locked_at, user }) {
         doubt_id,
         status,
         slug,
-        difficulty: "1",
     });
 
     const [timeLeft, setTimeLeft] = useState(0);
@@ -65,28 +64,33 @@ function LockDoubt({ doubt, doubt_id, status, slug, locked_at, user }) {
             <div className="d-flex justify-content-between align-items-center gap-3">
                 {/* Display timer if doubt is locked */}
                 {status === 0 && timerActive && (
-                    <div class="countdown-timer bg-danger text-light px-3 py-1 rounded fw-bold fs-5 d-flex align-items-center">
-                        <i class="ti ti-clock me-1"></i>
-                        <span id="countdown">{formatTime(timeLeft)}</span>
+                    <div className="row">
+                        <div className="col-12 d-flex justify-content-end">
+                            <div
+                                id="countdown-timer"
+                                style={{
+                                    background: "#DC2626",
+                                    color: "#ffffff",
+                                    fontWeight: "bold",
+                                    padding: "8px 15px",
+                                    borderRadius: 12,
+                                    fontSize: 20,
+                                    boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
+                                    position: "fixed",
+                                    top: 50,
+                                    right: "35%",
+                                    zIndex: 9999,
+                                }}
+                            >
+                                <span id="timer-display">
+                                    {formatTime(timeLeft)}
+                                </span>
+                            </div>
+                        </div>
                     </div>
                 )}
 
                 {/* If the current user is the one who locked the doubt, show the select box */}
-                {doubt.locked_by == user.id && (
-                    <>
-                        <select
-                            className="form-select w-auto"
-                            value={data.difficulty}
-                            onChange={(e) =>
-                                setData("difficulty", e.target.value)
-                            }
-                        >
-                            <option value="1">Easy</option>
-                            <option value="2">Medium</option>
-                            <option value="3">Hard</option>
-                        </select>
-                    </>
-                )}
 
                 {/* Show Lock button when status is 1 (Unsolved) */}
                 {status === 1 && (

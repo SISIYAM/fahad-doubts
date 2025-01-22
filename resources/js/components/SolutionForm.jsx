@@ -1,10 +1,12 @@
-import { router } from "@inertiajs/react";
+import { router, useForm } from "@inertiajs/react";
 import React, { useState, useRef, useEffect } from "react";
 
 function SolutionForm({ user, doubt }) {
     const [image, setImage] = useState(null);
     const [audio, setAudio] = useState(null);
+    const [difficulty, setDifficulty] = useState("1");
     const [isRecording, setIsRecording] = useState(false);
+    const [processing, setProcessing] = useState(false);
     const [seconds, setSeconds] = useState(0);
     const [text, setText] = useState("");
     const mediaStream = useRef(null);
@@ -86,11 +88,13 @@ function SolutionForm({ user, doubt }) {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        setProcessing(true);
 
         const formData = new FormData();
         formData.append("text", text);
         formData.append("doubt_slug", doubt.slug);
         formData.append("doubt_id", doubt.id);
+        formData.append("difficulty", difficulty);
 
         // append image if available
         if (image && image.file) {
@@ -112,6 +116,7 @@ function SolutionForm({ user, doubt }) {
                 setText("");
                 setImage(null);
                 setAudio();
+                setProcessing(false);
             },
         });
     };
@@ -255,7 +260,26 @@ function SolutionForm({ user, doubt }) {
                                             Recording: {seconds}s
                                         </div>
                                     )}
-
+                                    {doubt.locked_by == user.id && (
+                                        <>
+                                            <select
+                                                className="form-select  w-auto m-2"
+                                                onChange={(e) =>
+                                                    setDifficulty(
+                                                        e.target.value
+                                                    )
+                                                }
+                                            >
+                                                <option selected value="1">
+                                                    Easy
+                                                </option>
+                                                <option value="2">
+                                                    Medium
+                                                </option>
+                                                <option value="3">Hard</option>
+                                            </select>
+                                        </>
+                                    )}
                                     <div className="d-flex align-items-center">
                                         <button
                                             className="btn btn-dark shadow-sm"
@@ -264,8 +288,11 @@ function SolutionForm({ user, doubt }) {
                                                 maxWidth: 150,
                                             }}
                                             type="submit"
+                                            disabled={processing}
                                         >
-                                            Post
+                                            {processing
+                                                ? "Processing..."
+                                                : "Post"}
                                         </button>
                                     </div>
                                 </div>

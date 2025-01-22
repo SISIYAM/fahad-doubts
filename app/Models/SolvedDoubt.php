@@ -16,7 +16,8 @@ class SolvedDoubt extends Model
         'audio',  
         'status',
         'isSatisfied',
-        'isReported'
+        'isReported',
+        'difficulty',
         
     ];
 
