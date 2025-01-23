@@ -162,6 +162,8 @@ Route::middleware([AuthMiddleware::class])->group(function () {
             Route::get("/admin/manage/moderators","loadManageModeratorPage")->name("admin.manage.moderator");
             // route for load admin profile
             Route::get("/admin/profile","loadAdminProfile")->name("admin.profile");
+            // route for load manage students page
+            Route::get("/admin/manage/student","loadManageStudentPage")->name("admin.manage.student");
 
         });
 

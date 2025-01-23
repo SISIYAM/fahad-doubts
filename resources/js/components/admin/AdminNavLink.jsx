@@ -33,6 +33,21 @@ function AdminNavLink() {
                 </li>
                 <li className="pc-item">
                     <Link
+                        href={route("admin.manage.student")}
+                        className="pc-link"
+                    >
+                        <span className="pc-micon">
+                            <svg className="pc-icon">
+                                <use xlinkHref="#custom-user" />
+                            </svg>
+                        </span>
+                        <span className="pc-mtext" data-i18n="Students">
+                            Students
+                        </span>
+                    </Link>
+                </li>
+                <li className="pc-item">
+                    <Link
                         href={route("admin.manage.moderator")}
                         className="pc-link"
                     >
