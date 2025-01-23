@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Chapter;
 use App\Models\Subject;
 use App\Models\StudentClass;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -116,5 +117,52 @@ class AdminInsertController extends Controller
             
             return to_route("admin.manage.matrials")->with('error', 'Failed to add the Chapter. Please try again.');
         }
-    } 
+    }
+    
+    // method for inser admin
+    public function addSolver(Request $req) {
+        $validatedData = $req->validate([
+             'name' => "required|string",
+             'email' => "required|string",
+             'mobile' => "required|string",
+             'institue' => "nullable|string",
+             'solver_department' => "nullable|string",
+        ]);
+
+        try {
+
+            // default password
+            $validatedData['role'] = "solver";
+            $validatedData['password'] = "password";
+
+
+            // Check if the email already exists for the same role
+            $email_exists = User::where('email', $req->email)
+            ->where('role',  $validatedData['role'])
+            ->exists();
+
+            // Check if the mobile already exists for the same role
+            $mobile_exists = User::where('mobile', $req->mobile)
+            ->where('role',  $validatedData['role'])
+            ->exists();
+
+            // Return specific error messages
+            if ($email_exists && $mobile_exists) {
+            return to_route("admin.manage.solver")->with('error', 'An account with this email and mobile already exists for the selected role. Please log in.');
+            } elseif ($email_exists) {
+            return to_route("admin.manage.solver")->with('error', 'An account with this email already exists for the selected role. Please log in.');
+            } elseif ($mobile_exists) {
+            return to_route("admin.manage.solver")->with('error', 'An account with this mobile number already exists for the selected role. Please log in.');
+            }
+
+            // create user
+            $user = User::create($validatedData);
+            
+            return to_route("admin.manage.solver")->with("success","Solver added successfully.");
+
+
+        } catch (\Exception $e) {
+            return to_route("admin.manage.solver")->with("error","An error occurred while creating solver".$e->getMessage());
+        }
+    }
 }

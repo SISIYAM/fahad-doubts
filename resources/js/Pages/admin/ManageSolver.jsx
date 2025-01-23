@@ -1,10 +1,32 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Layout from "@/layouts/Layout";
 import AddSolverTab from "./components/AddSolverTab";
+import SolverList from "./components/SolverList";
+import { toast, ToastContainer } from "react-toastify";
 
-function ManageSolver() {
+function ManageSolver({ solvers, universities, departments, flash, errors }) {
+    useEffect(() => {
+        // Show success message
+        if (flash.success) {
+            toast.success(flash.success);
+        }
+
+        // Show error message
+        if (flash.error) {
+            toast.error(flash.error);
+        }
+
+        // Show validation errors
+        if (errors) {
+            Object.values(errors).forEach((error) => {
+                toast.error(error);
+            });
+        }
+    }, [flash, errors]);
+
     return (
         <>
+            <ToastContainer />
             <div className="row">
                 {/* [ sample-page ] start */}
                 <div className="col-sm-12">
@@ -64,14 +86,20 @@ function ManageSolver() {
                             role="tabpanel"
                             aria-labelledby="list-1"
                         >
-                            <AddSolverTab />
+                            <SolverList solvers={solvers} />
                         </div>
                         <div
                             className="tab-pane"
                             id="add"
                             role="tabpanel"
                             aria-labelledby="add-1"
-                        ></div>
+                        >
+                            {" "}
+                            <AddSolverTab
+                                universities={universities}
+                                departments={departments}
+                            />
+                        </div>
                         <div
                             className="tab-pane"
                             id="approve"

@@ -173,6 +173,8 @@ Route::middleware([AuthMiddleware::class])->group(function () {
             Route::post("/execute/add/subject","insertSubject")->name("admin.execute.add.subject");
             // route for insert chapter
             Route::post("/execute/add/chapter","insertChapter")->name("admin.execute.add.chapter");
+            // route for add solver
+            Route::post("/execute/add/solver","addSolver")->name("admin.add.solver");
         });
 
     });

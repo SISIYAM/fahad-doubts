@@ -414,7 +414,6 @@ class AuthController extends Controller
        
             }
             
-
             // update the password
             $user->password = Hash::make($req->password); 
             $user->save(); 
