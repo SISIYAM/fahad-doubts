@@ -8,6 +8,7 @@ use App\Models\Chapter;
 use App\Models\Subject;
 use App\Models\StudentClass;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 
 class StudentController extends Controller
@@ -23,7 +24,9 @@ class StudentController extends Controller
 
     // function for load post doubt page
     public function loadPostDoubt() {
-
+         // Access the global variable
+         $globalVar = App::make('globalVariable');
+        return $globalVar;
          // search classes
          $classes = StudentClass::all();
         

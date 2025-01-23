@@ -14,9 +14,54 @@ use Illuminate\Support\Facades\Hash;
 class AuthController extends Controller
 {
 
+
+
+
+    /**
+     * Global send_sms function for this controller
+     */
+    protected function send_sms($message, $numbers)
+    {
+        $url = "http://bulksmsbd.net/api/smsapi"; 
+        $api_key = env('SMS_API_KEY');
+        $senderid = env('SMS_SENDER_ID'); 
+
+       
+        $data = [
+            "api_key" => $api_key,
+            "senderid" => $senderid,
+            "number" => $numbers, 
+            "message" => $message 
+        ];
+
+        // Initialize cURL
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url); 
+        curl_setopt($ch, CURLOPT_POST, 1); 
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data); 
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); 
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); 
+
+        // Execute the API call
+        $response = curl_exec($ch);
+
+        // Close cURL
+        curl_close($ch);
+
+        // Return the API response
+        return $response;
+    }
+
+
+    /**
+     * Global verify otp function for this controller
+     */
     protected function isOtpValid($user, $otp) {
         return $user->otp == $otp && Carbon::now()->lessThanOrEqualTo($user->otp_expires_at);
     }
+
+
+
   
     // function for load login form
     public function loadLoginForm() {
@@ -63,11 +108,24 @@ class AuthController extends Controller
         $otp = rand(1111,9999);
         $otp_expires_at = Carbon::now()->addMinutes(5);
 
+        // Prepare message
+        $expiryTime = $otp_expires_at->format('l, F j, Y g:i A');
+        $message = "Your OTP for account verification is {$otp}. This code will expire in {$expiryTime}. Please enter it to verify your mobile number. Do not share this OTP with anyone.";
+
         $validated['otp'] = $otp;
         $validated['otp_expires_at'] = $otp_expires_at;
 
+        // prepare number for send otp
+        $numbers = [$req->mobile];
+        // send otp
+        $this->send_sms($message, $numbers);
+ 
+
         $user = TempUser::create($validated);
-        
+
+       
+        // after send otp redirect to route
+
         return to_route('load.otp.form')->with([
             'user_id' => $user->id,
             'message' => "We have sent a 4-digit OTP to your mobile number " . $validated['mobile'] . ". Please enter the OTP below to verify your account and set your password."
