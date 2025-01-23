@@ -11,17 +11,17 @@ class StudentUpdateController extends Controller
     public function updateProfile(Request $req)
     {
   
-        try {
-            // Validate incoming data
-            $validatedData = $req->validate([
-                'name' => 'required|string|max:255',
-                'email' => 'required|email|max:255',
-                'mobile' => 'nullable|numeric', 
-                'studentClass' => 'required|string|max:255',
-                'institue' => 'nullable|string|max:255',
-                'group' => 'required|string|max:255',
-            ]);
+         // Validate incoming data
+         $validatedData = $req->validate([
+            'name' => 'nullable|string|max:255',
+            'email' => 'nullable|email|max:255',
+            'mobile' => 'nullable|numeric', 
+            'studentClass' => 'nullable|string|max:255',
+            'institue' => 'nullable|string|max:255',
+            'group' => 'nullable|string|max:255',
+        ]);
 
+        try {
             
             $user = User::where('id',$req->user_id)->first();
         
@@ -39,7 +39,7 @@ class StudentUpdateController extends Controller
             
         } catch (\Exception $e) {
 
-        return $e;
+        return to_route('student.profile')->with('error','An error occurd while updating profile'.$e->getMessage());
 
         }
     }
