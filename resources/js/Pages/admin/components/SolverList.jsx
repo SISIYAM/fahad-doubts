@@ -1,6 +1,7 @@
 import React from "react";
 import { useForm } from "@inertiajs/react";
 import { route } from "ziggy-js";
+import Swal from "sweetalert2";
 
 import DataTable from "datatables.net-react";
 import DT from "datatables.net-bs5";
@@ -18,7 +19,22 @@ function SolverList({ solvers }) {
         data.user_id = solver.id;
         data.status = status;
 
-        console.log(data);
+        const action = status === 1 ? "activate" : "deactivate";
+        const actionConfirm = status === 1 ? "activated" : "deactivated";
+
+        Swal.fire({
+            title: `Are you sure?`,
+            text: `You are about to ${action} this solver. This action cannot be undone!`,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: `Yes, ${action} it!`,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                post(route("admin.update.user.status"), data);
+            }
+        });
     };
 
     return (

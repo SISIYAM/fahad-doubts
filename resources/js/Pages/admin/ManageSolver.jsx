@@ -11,6 +11,11 @@ function ManageSolver({ solvers, universities, departments, flash, errors }) {
             toast.success(flash.success);
         }
 
+        // Show warning message
+        if (flash.warning) {
+            toast.warning(flash.warning);
+        }
+
         // Show error message
         if (flash.error) {
             toast.error(flash.error);

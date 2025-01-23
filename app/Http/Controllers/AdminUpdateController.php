@@ -2,9 +2,33 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class AdminUpdateController extends Controller
 {
-    //
+    // fucntion for update user status
+    public function updateStatus(Request $req) {
+        try {
+ 
+            if($req->status){
+                $type = "success";
+                $message = "Solver Activated successfully.";
+            }else{
+                $type = "warning";
+                $message = "Solver Deactivated successfully.";
+
+            }
+
+            $user = User::where("id",$req->user_id)->first();
+            $user->update([
+                'status' => $req->status,
+            ]);
+
+            return to_route("admin.manage.solver")->with($type,$message);
+
+        } catch (\Exception $e) {
+            return to_route("admin.manage.solver")->with("error","An error occurred while updating solver".$e->getMessage());
+        }
+    }
 }

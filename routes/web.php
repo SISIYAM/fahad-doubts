@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdminInsertController;
+use App\Http\Controllers\AdminUpdateController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DoubtController;
@@ -175,6 +176,12 @@ Route::middleware([AuthMiddleware::class])->group(function () {
             Route::post("/execute/add/chapter","insertChapter")->name("admin.execute.add.chapter");
             // route for add solver
             Route::post("/execute/add/solver","addSolver")->name("admin.add.solver");
+        });
+
+        #=== Routes for admin update controller ===#
+        Route::controller(AdminUpdateController::class)->group(function() {
+            // route for update user status active or deactive
+            Route::post("/update/user/status","updateStatus")->name("admin.update.user.status");
         });
 
     });
