@@ -1,5 +1,6 @@
 import { Link, useForm } from "@inertiajs/react";
 import React, { useEffect, useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
 import { route } from "ziggy-js";
 
 function ForgotPassword({ flash, errors }) {
@@ -67,6 +68,7 @@ function ForgotPassword({ flash, errors }) {
 
     return (
         <>
+            <ToastContainer />
             <div className="auth-main">
                 <div className="auth-wrapper v1">
                     <div className="auth-form">

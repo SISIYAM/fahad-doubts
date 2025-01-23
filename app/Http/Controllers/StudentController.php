@@ -24,9 +24,7 @@ class StudentController extends Controller
 
     // function for load post doubt page
     public function loadPostDoubt() {
-         // Access the global variable
-         $globalVar = App::make('globalVariable');
-        return $globalVar;
+        
          // search classes
          $classes = StudentClass::all();
         
