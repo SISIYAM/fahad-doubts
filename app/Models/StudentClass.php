@@ -29,6 +29,11 @@ class StudentClass extends Model
         return $this->hasMany(Subject::class,'class_id','id');
     }
 
+    // relation between class and doubt
+    public function doubts() {
+        return $this->hasMany(Doubt::class,'class_id','id');
+    }
+
     // method for generate slug
     public function sluggable(): array
     {

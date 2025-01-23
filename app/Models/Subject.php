@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\User;
+use App\Models\Doubt;
 use App\Models\Chapter;
 use App\Models\StudentClass;
 use Illuminate\Database\Eloquent\Model;
@@ -37,7 +38,10 @@ class Subject extends Model
         return $this->hasMany(Chapter::class,'chapter_id','id');
     }
 
-    
+    // relation between subject and doubt
+    public function doubts() {
+        return $this->hasMany(Doubt::class,'subject_id','id');
+    }
 
 
     // method for generate slug

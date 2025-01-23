@@ -44,10 +44,22 @@ class StudentController extends Controller
 
     // function for load explore doubts page
     public function laodExploreDoubt() {
-         // search posted doubts by user
-         $doubts = Doubt::orderBy('id','desc')->with('student','class','subject','chapter')->get();
+        // search posted doubts by user
+        $doubts = Doubt::orderBy('id','desc')->with('student','class','subject','chapter')->get();
+        // search classes
+        $classes = StudentClass::with('subjects','doubts')->get();
         
-        return Inertia::render("student/ExploreDoubt",['doubts' => $doubts]);
+        // search subjects 
+        $subjects = Subject::with("class","doubts")->get();
+
+        // search chapters
+        $chapters = Chapter::with(['subject' => function($query){
+            $query->with("class");
+        },"subject"])->get();
+
+        // return $chapters;
+        
+        return Inertia::render("student/ExploreDoubt",['doubts' => $doubts,'classes' => $classes,'subjects' => $subjects,'chapters' => $chapters]);
     }
 
     // method for load doubt details page
