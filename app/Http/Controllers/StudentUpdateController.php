@@ -10,6 +10,7 @@ class StudentUpdateController extends Controller
     // function for update student profile
     public function updateProfile(Request $req)
     {
+  
         try {
             // Validate incoming data
             $validatedData = $req->validate([
@@ -29,7 +30,7 @@ class StudentUpdateController extends Controller
                 'name' => $validatedData['name'],
                 'email' => $validatedData['email'],
                 'mobile' => $validatedData['mobile'],
-                'studentClass' => $validatedData['studentClass'],
+                'class' => $validatedData['studentClass'],
                 'institue' => $validatedData['institue'],
                 'group' => $validatedData['group'],
             ]);
