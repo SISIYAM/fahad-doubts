@@ -23,8 +23,8 @@ class AuthController extends Controller
     protected function send_sms($message, $numbers)
     {
         $url = "http://bulksmsbd.net/api/smsapi"; 
-        $api_key = env('SMS_API_KEY');
-        $senderid = env('SMS_SENDER_ID'); 
+        $api_key = "rhryMzfntEaLjNReS4t8";
+        $senderid = "8809617613099"; 
 
        
         $data = [
@@ -342,6 +342,7 @@ class AuthController extends Controller
             // send otp
             $this->send_sms($message, $numbers);
             
+        
 
             // update user table and set otp and expire time
             $user->update([
