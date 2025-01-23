@@ -85,9 +85,24 @@ class AuthController extends Controller
         return Inertia::render("authentication/OtpPage");
     }
 
+    // function for load forgot password verify otp page
+    public function loadForgotPasswordOtpForm() {
+        return Inertia::render("authentication/ForgotPasswordOtp");
+    }
+
     // function for load loadSetPasswordForm
     public function loadSetPasswordForm() {
         return Inertia::render("authentication/SetPassword");
+    }
+
+    // function for load set new password form
+    public function loadSetNewPassword() {
+        return Inertia::render("authentication/NewPassword");
+    }
+
+    // function for load forgot password form
+    public function loadForgotPasswordForm() {
+        return Inertia::render("authentication/ForgotPassword");
     }
 
     // function for validate and register account
@@ -291,6 +306,126 @@ class AuthController extends Controller
         } catch (\Exception $e) {
             
             return to_route("student.profile")->with("error", "An error occurred: " . $e->getMessage());
+        }
+    }
+
+    // execute forgot password logic
+    public function executeForgotPassword(Request $req) {
+        $validated = $req->validate([
+            'mobile' => [
+            'required',
+            'numeric',
+            'regex:/^01[0-9]{9}$/', 
+        ]
+        ]);
+
+        try {
+            
+            // find user using mobile number
+            $user = User::where("mobile",$validated['mobile'])->first();
+
+            if(!$user) {
+                return to_route("auth.forgot.password")->with('error', 'No account found with this number. Try another.');
+       
+            }
+
+            // generate otp
+            $otp = rand(1111,9999);
+            $otp_expires_at = Carbon::now()->addMinutes(5);
+
+            // Prepare message
+            $expiryTime = $otp_expires_at->format('l, F j, Y g:i A');
+            $message = "Your OTP for reset password is {$otp}. This code will expire in {$expiryTime}. Please enter it to verify your mobile number. Do not share this OTP with anyone.";
+
+            // prepare number for send otp
+            $numbers = [$req->mobile];
+            // send otp
+            $this->send_sms($message, $numbers);
+            
+
+            // update user table and set otp and expire time
+            $user->update([
+                'otp' => $otp,
+                'otp_expires_at' => $otp_expires_at,
+            ]);
+            
+           // after send otp redirect to route
+
+            return to_route('load.forgot.verify.otp')->with([
+                'user_id' => $user->id,
+                'message' => "We have sent a 4-digit OTP to your mobile number " . $validated['mobile'] . ". Please enter the OTP below to verify your account and set your password."
+            ]);
+
+        } catch (\Exception $e) {
+             
+            return to_route("auth.forgot.password")->with("error", "An error occurred: " . $e->getMessage());
+        }
+    }
+
+
+    // function for verify forgot password otp
+    public function verifyForgotPasswordOtp(Request $req){
+        $req->validate([
+            'otp' => 'string|required|numeric',
+        ]);
+        
+        try {
+            
+            $user = User::where('id',$req->user_id)->first();  
+           
+            // return $this->isOtpValid($user, $req->otp);
+            if ($this->isOtpValid($user, $req->otp)) {
+                return to_route("load.new.password.form")
+                ->with(['user_id' => $user->id,'message' => 'Please set a new password for your account to complete the forgot password process.']);
+
+            } else {
+                // If OTP is invalid or expired
+                return to_route('load.forgot.verify.otp')->with([
+                    'user_id' => $user->id,
+                    'error_message' => "Invalid or expired OTP"
+                ]);
+              
+            }
+    
+        } catch (\Exception $e) {
+            return $e;
+            return to_route("auth.registration.form")->with('error', 'An error occurred while verify otp.');
+        }
+    }
+
+
+    // function for set new password to user
+    public function setNewPassword(Request $req) {
+        $validated = $req->validate([
+            'password' => 'required|string|min:4',
+            'confirm_password' => 'required|string|min:4', 
+        ]);
+        
+        if($req->user_id == "timeout"){
+            return to_route("auth.forgot.password")->with('error', 'Session Expired! Try again');
+        }
+
+        try {
+        
+            $user = User::where("id",$req->user_id)->first();
+
+            if(!$user) {
+                return to_route("auth.forgot.password")->with('error', 'No account found with this number. Try another.');
+       
+            }
+            
+
+            // update the password
+            $user->password = Hash::make($req->password); 
+            $user->save(); 
+
+            return to_route("auth.login")->with('success', 'Your password has been changed successfully!');
+       
+
+    
+        } catch (\Exception $e) {
+            return $e;
+            return to_route("load.new.password.form")->with('error', 'An error occurred while reset password.');
         }
     }
 

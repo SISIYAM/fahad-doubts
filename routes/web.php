@@ -44,8 +44,12 @@ Route::controller(AuthController::class)->group(function() {
     Route::get("/auth/registration","loadRegistrationForm")->name("auth.registration.form");
     // route for load verify otp form
     Route::get("/verify/otp","loadVerifyOtpForm")->name("load.otp.form");
+    // route for load forgot password otp form
+    Route::get("/forgot-password/verify/otp","loadForgotPasswordOtpForm")->name("load.forgot.verify.otp");
     // route for load set password form
     Route::get("/auth/set/password","loadSetPasswordForm")->name("load.set.password.form");
+    // route for load set new password form
+    Route::get("/forgot/set/new/password","loadSetNewPassword")->name("load.new.password.form");
 
     #=== Post Routes ===#
     // route for login
@@ -61,6 +65,12 @@ Route::controller(AuthController::class)->group(function() {
 
     // route for user password
     Route::post("/execute/change/password","changePassword")->name("execute.change.password");
+    // route for execute forgot password logic
+    Route::post("/execute/forgot/password","executeForgotPassword")->name("execute.forgot.password");
+    // route for execute set new password
+    Route::post("/execute/forgot/set/new/password","setNewPassword")->name("execute.set.new.password");
+    // route for check forgot password otp
+    Route::post("/forgot/password/otp/verify","verifyForgotPasswordOtp")->name("forgot.password.otp.verify");
 
     
 });
