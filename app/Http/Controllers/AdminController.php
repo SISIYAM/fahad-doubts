@@ -57,4 +57,14 @@ class AdminController extends Controller
         return Inertia::render("admin/Profile");
     }
 
+    // method for load load manage students page
+    public function loadManageStudentPage() {
+
+        // find all studnets
+        $students = User::where("role","student")->get();
+
+    
+        return Inertia::render("admin/ManageStudent",['students' => $students]);
+    }
+
 }

@@ -184,6 +184,8 @@ Route::middleware([AuthMiddleware::class])->group(function () {
         Route::controller(AdminUpdateController::class)->group(function() {
             // route for update user status active or deactive
             Route::post("/update/user/status","updateStatus")->name("admin.update.user.status");
+            // route for approve students
+            Route::post("/approve/student","approveStudent")->name("admin.approve.student");
         });
 
     });
